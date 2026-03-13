@@ -1,4 +1,4 @@
-# Ce projet a été créé dans le cadre du cursus 42 par dle-fur
+Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
 # Inception :
 Description :
@@ -27,7 +27,7 @@ Avantage docker :
 - Creer plusieurs conteneurs qui sont baser sur une image
 - Creer un server web facilement
 
-Différences entre VM et conteneur :
+Différences entre VM et conteneur
 Conteneur :
 - Le conteneur empaqute l'appli + les dependances, tourne comme un process isoler sur le meme noyau que l'hote (partage le noyau)
 - Leger, rapide a demarrer
@@ -58,19 +58,23 @@ docker-compose.yml :
 
 # Commandes Docker :
 
-docker run <mon_image>							->	telecharge l'image et creer un conteneur depuis l'image
-docker run -it <mon_image>						->	permet d'interagir dans la console du conteneur
-docker run -it --rm <mon_image>					->	supprime automatiquement le conteneur lorsqu'on exit
-docker ps										->	liste les conteneurs en cours d'execution
-docker ps -a									->	liste tous les conteneur disponible dans la machine
-docker image ls									->	liste les images disponible dans notre systeme
-docker rm <id_conteneur>						->	supprimer un conteneur
-docker image rm <id_image>						->	supprimer une image
-docker start <id_conteneur>						->	demarrer un conteneur qui est arreter
-docker start -ai <id_conteneur>					->	permet de demarrer un conteneur et d'interagir avec lui, en une seule commande
-docker stop <id_conteneur>						->	arreter un conteneur qui est en cours d'execution
-docker exec -it <id_conteneur> bash				->	permet d'entree dans un conteneur en cours d'execution (2eme facon, exit n'arrete pas le conteneur)
-docker exec <id_conteneur> touch index.js		->	permet d'executer une commande dans notre conteneur sans entree dans celui ci
+## Commandes Docker utiles
+
+| Commande | Description |
+|---|---|
+| `docker run <mon_image>` | Télécharge l’image si nécessaire et crée un conteneur à partir de cette image. |
+| `docker run -it <mon_image>` | Lance le conteneur en mode interactif pour pouvoir utiliser la console. |
+| `docker run -it --rm <mon_image>` | Lance le conteneur en mode interactif et le supprime automatiquement à la sortie. |
+| `docker ps` | Liste les conteneurs en cours d’exécution. |
+| `docker ps -a` | Liste tous les conteneurs présents sur la machine. |
+| `docker image ls` | Liste toutes les images disponibles sur le système. |
+| `docker rm <id_conteneur>` | Supprime un conteneur. |
+| `docker image rm <id_image>` | Supprime une image. |
+| `docker start <id_conteneur>` | Démarre un conteneur arrêté. |
+| `docker start -ai <id_conteneur>` | Démarre un conteneur et permet d’interagir avec lui en une seule commande. |
+| `docker stop <id_conteneur>` | Arrête un conteneur en cours d’exécution. |
+| `docker exec -it <id_conteneur> bash` | Ouvre un terminal dans un conteneur déjà en cours d’exécution. `exit` ne stoppe pas le conteneur. |
+| `docker exec <id_conteneur> touch index.js` | Exécute une commande dans un conteneur sans y entrer. |
 
 # Les volume dans docker :
 
