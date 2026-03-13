@@ -36,7 +36,7 @@ VM :
 - Virutalise une machine entiere et a son propre systeme d'exploitation avec noyau
 - Plus lourd et plus lent
 
-# Les differents composants Docker :
+## Les differents composants Docker :
 Conteneur :
 - Un conteneur est une instance de l'image. Lorsque l'image est lancee, ca creer un conteneur qui a un process, un etat
 - Un conteneur est construit grace a une image
@@ -56,10 +56,7 @@ docker-compose.yml :
 - Compose permet de gérer des applications qui utilisent plusieurs containers et de communiquer entre eux.
 - Pour gerer l'ensemble des containers
 
-# Commandes Docker :
-
-## Commandes Docker utiles
-
+## Commandes Docker :
 | Commande | Description |
 |---|---|
 | `docker run <mon_image>` | Télécharge l’image si nécessaire et crée un conteneur à partir de cette image. |
@@ -75,35 +72,49 @@ docker-compose.yml :
 | `docker stop <id_conteneur>` | Arrête un conteneur en cours d’exécution. |
 | `docker exec -it <id_conteneur> bash` | Ouvre un terminal dans un conteneur déjà en cours d’exécution. `exit` ne stoppe pas le conteneur. |
 | `docker exec <id_conteneur> touch index.js` | Exécute une commande dans un conteneur sans y entrer. |
+| `docker volume create <mon_volume>` | permet de creer un volume dans docker |
+| `docker volume ls` | liste les volumes |
+| `docker volume rm <mon_volume>` | supprimer un volume |
+| `docker volume inspect <mon_volume>` | permet de connaitre des details sur le volume |
 
-# Les volume dans docker :
-
+## Les volume dans docker :
 - L'utilisation des volumes permet de garder une trace d'un dossier ou fichier apres la suppression d'un conteneur (exemple : home)
 - Ce dossier pourra etre reutiliser dans un autre conteneur
 - Utile pour les bases de donnees afin de les garder en memoire
 - Utile pour les fichiers de configuration, exemple nginx
 
-# Mapper un volume :
-
-- Permet de copier du contenu qui se trouve dans la machine local(dossier) vers le conteneur(dossier).
+## Mapper un volume :
+- Permet de copier du contenu qui se trouve dans la machine local(dossier) vers le conteneur(dossier). Ils sont en relation.
 - Ce contenu peut etre modifier directement dans le conteneur.
-- Une fois le conteneur supprimer, le contenu modifier dans celui est enregistrer dans le contenu de la machine local.
+- Une fois le conteneur supprimer, le contenu modifier dans celui ci est enregistrer dans le contenu de la machine local.
 - En resume c est le dossier de la machine local qui prend le dessus
 
 exemple :
 - Mapper(copier) un dossier test qui se trouve dans la machine local dans un dossier home du conteneur, tous le contenu qui se trouve dans le dossier test de la machine local se retrouvera dans le dossier home du conteneur
 - Dans le cas ou le fichier qui se trouve dans le dossier home du conteneur est modifier et enregistrer, le conteneur peut etre supprimer. Les modifications seront enregistrer dans le dossier test de la machine local.
 
-docker run -it --rm -v /home/david/docker/test:/test-docker ubuntu:24.04
-- Le dossier de la machine local /home/david/docker/test est monté dans le conteneur dans /test-docker
+| Commande | Description |
+|---|---|
+| `docker run -it --rm -v /home/david/docker/test:/test-docker ubuntu:24.04` | Le dossier de la machine local /home/david/docker/test est monté dans le conteneur dans /test-docker |
 
+## Manager un volume :
+- A la difference de mapper, il faut creer un volume dans docker
+- Le volume creer recupere le contenu auquel il a ete relier
+- Si le conteneur est supprimer les fichier du volume ne sont pas supprimer
+- Si on relie a un autre dossier vide, celui ci contiendra tous les fichiers du volumes
+- Si on relie un volume a un dossier avec du contenu, le contenu du dossier est remplacer par celui du volume
 
-# Manager un volume
+<img width="366" height="234" alt="Image" src="https://github.com/user-attachments/assets/57209862-3d4e-4df7-bb30-41f6d953a481" />
 
-- Creer un volume specifique directement dans docker
-- C'est le dossier du conteneur qui prend le dessus
+| Commande | Description |
+|---|---|
+| `docker volume create <mon_volume>` | permet de creer un volume dans docker |
+| `docker volume ls` | liste les volumes |
+| `docker volume rm <mon_volume>` | supprimer un volume |
+| `docker run -it --rm -v <mon_volume>:/bin ubuntu:24.04` | manager un volume dans le conteneur |
+| `docker volume inspect <mon_volume>` | permet de connaitre des details sur le volume |
 
-
+## Mapper des ports :
 
 
 
