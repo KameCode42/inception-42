@@ -13,6 +13,8 @@ Le projet repose sur plusieurs conteneurs séparés :
 - MariaDB gère la base de données.
 Les services communiquent via un réseau Docker dédié, et les données persistantes (base de données et fichiers WordPress) sont stockées dans des volumes nommés, sauvegardés sur l’hôte dans /home/<login>/data
 
+#
+
 # Docker :
 - Docker permet d'utiliser plusieurs services grâce à des conteneurs. Ces conteneurs sont indépendants les uns des autres, mais pourront communiquer ensemble si nécessaire.
 - Une des forces de Docker, est la possibilité de démarrer et d'arrêter des services très rapidement.
@@ -34,8 +36,6 @@ VM :
 - Virutalise une machine entiere et a son propre systeme d'exploitation avec noyau
 - Plus lourd et plus lent
 
-#
-
 # Les differents composants Docker :
 Conteneur :
 - Un conteneur est une instance de l'image. Lorsque l'image est lancee, ca creer un conteneur qui a un process, un etat
@@ -56,8 +56,51 @@ docker-compose.yml :
 - Compose permet de gérer des applications qui utilisent plusieurs containers et de communiquer entre eux.
 - Pour gerer l'ensemble des containers
 
-#
-
 # Commandes Docker :
+
+docker run <mon_image>							->	telecharge l'image et creer un conteneur depuis l'image
+docker run -it <mon_image>						->	permet d'interagir dans la console du conteneur
+docker run -it --rm <mon_image>					->	supprime automatiquement le conteneur lorsqu'on exit
+docker ps										->	liste les conteneurs en cours d'execution
+docker ps -a									->	liste tous les conteneur disponible dans la machine
+docker image ls									->	liste les images disponible dans notre systeme
+docker rm <id_conteneur>						->	supprimer un conteneur
+docker image rm <id_image>						->	supprimer une image
+docker start <id_conteneur>						->	demarrer un conteneur qui est arreter
+docker start -ai <id_conteneur>					->	permet de demarrer un conteneur et d'interagir avec lui, en une seule commande
+docker stop <id_conteneur>						->	arreter un conteneur qui est en cours d'execution
+docker exec -it <id_conteneur> bash				->	permet d'entree dans un conteneur en cours d'execution (2eme facon, exit n'arrete pas le conteneur)
+docker exec <id_conteneur> touch index.js		->	permet d'executer une commande dans notre conteneur sans entree dans celui ci
+
+# Les volume dans docker :
+
+- L'utilisation des volumes permet de garder une trace d'un dossier ou fichier apres la suppression d'un conteneur (exemple : home)
+- Ce dossier pourra etre reutiliser dans un autre conteneur
+- Utile pour les bases de donnees afin de les garder en memoire
+- Utile pour les fichiers de configuration, exemple nginx
+
+# Mapper un volume :
+
+- Permet de copier du contenu qui se trouve dans la machine local(dossier) vers le conteneur(dossier).
+- Ce contenu peut etre modifier directement dans le conteneur.
+- Une fois le conteneur supprimer, le contenu modifier dans celui est enregistrer dans le contenu de la machine local.
+- En resume c est le dossier de la machine local qui prend le dessus
+
+exemple :
+- Mapper(copier) un dossier test qui se trouve dans la machine local dans un dossier home du conteneur, tous le contenu qui se trouve dans le dossier test de la machine local se retrouvera dans le dossier home du conteneur
+- Dans le cas ou le fichier qui se trouve dans le dossier home du conteneur est modifier et enregistrer, le conteneur peut etre supprimer. Les modifications seront enregistrer dans le dossier test de la machine local.
+
+docker run -it --rm -v /home/david/docker/test:/test-docker ubuntu:24.04
+- Le dossier de la machine local /home/david/docker/test est monté dans le conteneur dans /test-docker
+
+
+# Manager un volume
+
+- Creer un volume specifique directement dans docker
+- C'est le dossier du conteneur qui prend le dessus
+
+
+
+
 
 
