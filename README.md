@@ -60,6 +60,7 @@ docker-compose.yml :
 | Commande | Description |
 |---|---|
 | `docker run <mon_image>` | Télécharge l’image si nécessaire et crée un conteneur à partir de cette image. |
+| `docker run <mon_image> --name=<nom_conteneur>` | Donne un nom au conteneur |
 | `docker run -it <mon_image>` | Lance le conteneur en mode interactif pour pouvoir utiliser la console. |
 | `docker run -it --rm <mon_image>` | Lance le conteneur en mode interactif et le supprime automatiquement à la sortie. |
 | `docker ps` | Liste les conteneurs en cours d’exécution. |
@@ -72,10 +73,23 @@ docker-compose.yml :
 | `docker stop <id_conteneur>` | Arrête un conteneur en cours d’exécution. |
 | `docker exec -it <id_conteneur> bash` | Ouvre un terminal dans un conteneur déjà en cours d’exécution. `exit` ne stoppe pas le conteneur. |
 | `docker exec <id_conteneur> touch index.js` | Exécute une commande dans un conteneur sans y entrer. |
+| Volume |
+|---|---|
 | `docker volume create <mon_volume>` | permet de creer un volume dans docker |
 | `docker volume ls` | liste les volumes |
 | `docker volume rm <mon_volume>` | supprimer un volume |
 | `docker volume inspect <mon_volume>` | permet de connaitre des details sur le volume |
+| Port |
+|---|---|
+| `docker run -p <port_local>:<port_conteneur> <mon_image>` | permet de mapper des ports |
+| Reseau |
+|---|---|
+| `docker network ls` | liste les reseaux docker|
+| `docker network create --driver=<DRIVER> <mon_nom_reseau>` | Creer un reseau personnalise |
+| `docker run --network=<NAME_reseau> <image>` | Creer un conteneur et le relie au reseau |
+| `docker network disconnect <NAME_reseau> <nom_conteneur>` | Deconnecte un conteneur du reseau |
+| `docker network rm <NAME_reseau>` | Supprimer un reseau |
+| `docker network inspect <NAME_reseau>` | permet de connaitre les informations du reseau |
 
 ## Les volume dans docker :
 - L'utilisation des volumes permet de garder une trace d'un dossier ou fichier apres la suppression d'un conteneur (exemple : home)
@@ -115,7 +129,61 @@ exemple :
 | `docker volume inspect <mon_volume>` | permet de connaitre des details sur le volume |
 
 ## Mapper des ports :
+- Un conteneur emet des donnee via un port que l'on peut recuperer
+- Le port de la machine locale doit etre libre
+- Un conteneur emet un port par defaut
+- L'option -p permet de mapper des ports
+- Exemple test navigateur : <http://localhost:9000>
 
+docker run -p 9000:80 nginx
+- en premier le port de la machine local(doit etre libre) et en deuxieme, le port du conteneur
+- permet de mapper un port pour nginx, 9000 port de la machine local et 80 port d'entree de nginx
 
+## Conteneurs connectes :
+- Pour que des conteneurs puissent communiquer, il faut installer deux programmes dans chaque conteneur, ping et ip.
+- Communique par adresse ip
+- Les conteneurs sont relie entre eux par defaut
+
+ping :
+- permet de communiquer et d'envoyer des paquets a un conteneur specifique
+
+ip :
+- permet de recevoir des informations qui est l'ip d'une machine ou d'un conteneur
+
+| Commande | Description |
+|---|---|
+| `apt update` | met a jour les paquets |
+| `apt install -y iputils-ping` | installe ping |
+| `apt install -y iproute2` | installe ip |
+| `ping -h` | controle que ping soit installer |
+| `ip -h` | controle que ping soit installer |
+| `ip -c a` |  recuperer l ip de chaque conteneur |
+| `ping <ip_autre_conteneur>` | communiquer avec un conteneur |
+
+## Réseau :
+- Utilisation de l'option --network qui permet de relier un conteneur a un reseau
+- Sans l'option --network, le conteneur est connecter automatiquement au reseau normal de docker
+
+| Commande | Description |
+|---|---|
+| `docker network ls` | liste les reseaux docker|
+
+NETWORK ID     NAME                DRIVER    SCOPE
+5a8c6fcc0e65   bridge              bridge    local
+47e658e4afd5   host                host      local
+fef2de7a0c4b   inception-network   bridge    local
+d7b51185ef1e   none                null      local
+
+bridge :
+- reseau par defaut de docker
+
+null :
+- signifique qu il n est connecter a aucun reseau
+
+| Commande | Description |
+|---|---|
+| `docker run --network=<NAME> <image>` | relie le conteneur au reseau |
+
+## Dockerfile :
 
 
