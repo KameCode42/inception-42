@@ -28,6 +28,7 @@ Avantage docker :
 - Creer un server web facilement
 
 Différences entre VM et conteneur :
+
 Conteneur :
 - Le conteneur empaqute l'appli + les dependances, tourne comme un process isoler sur le meme noyau que l'hote (partage le noyau)
 - Leger, rapide a demarrer
