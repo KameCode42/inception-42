@@ -27,7 +27,7 @@ Avantage docker :
 - Creer plusieurs conteneurs qui sont baser sur une image
 - Creer un server web facilement
 
-Différences entre VM et conteneur
+Différences entre VM et conteneur :
 Conteneur :
 - Le conteneur empaqute l'appli + les dependances, tourne comme un process isoler sur le meme noyau que l'hote (partage le noyau)
 - Leger, rapide a demarrer
@@ -168,11 +168,11 @@ ip :
 |---|---|
 | `docker network ls` | liste les reseaux docker|
 
-NETWORK ID     NAME                DRIVER    SCOPE
-5a8c6fcc0e65   bridge              bridge    local
-47e658e4afd5   host                host      local
-fef2de7a0c4b   inception-network   bridge    local
-d7b51185ef1e   none                null      local
+exemple :
+| ID | NAME | DRIVER | SCOPE |
+|---|---|
+| 5a8c6fcc0e65 | bridge | bridge | local |
+| d7b51185ef1e | none | null | local |
 
 bridge :
 - reseau par defaut de docker
