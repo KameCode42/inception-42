@@ -169,7 +169,6 @@ ip :
 |---|---|
 | `docker network ls` | liste les reseaux docker|
 
-exemple :
 | ID | NAME | DRIVER | SCOPE |
 |---|---|
 | 5a8c6fcc0e65 | bridge | bridge | local |
