@@ -1,0 +1,8 @@
+# Ignore local secrets
+secrets/*
+!secrets/.gitkeep
+
+# Editor / OS files
+.DS_Store
+*.swp
+*~

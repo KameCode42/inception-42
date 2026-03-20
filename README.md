@@ -310,7 +310,8 @@ networks:
     driver: <type du réseau (pilote)>
 
 # NGINX :
-NGINX (la porte d’entrée) : 
+NGINX (la porte d’entrée) :
+- permet de mettre en place un serveur Web.
 - reçoit les requêtes HTTP/HTTPS (navigateur → serveur)
 - renvoie des fichiers statiques (HTML/CSS/JS/images)
 - rediriger les requêtes dynamiques (ex: .php) vers un autre service (ex: PHP-FPM)
