@@ -309,6 +309,55 @@ networks:
   <nom du réseau>:
     driver: <type du réseau (pilote)>
 
+# NGINX :
+NGINX (la porte d’entrée) : 
+- reçoit les requêtes HTTP/HTTPS (navigateur → serveur)
+- renvoie des fichiers statiques (HTML/CSS/JS/images)
+- rediriger les requêtes dynamiques (ex: .php) vers un autre service (ex: PHP-FPM)
+- gére SSL/TLS, redirections, cache, reverse proxy, etc.
+
+TLS :
+- C’est un protocole qui sécurise les échanges sur un réseau informatique, notamment sur Internet.
+TLS permet :
+- L’authentification du serveur
+- La confidentialité des données échangées (session chiffrée)
+- L’intégrité des données échangées
+- L’authentification du client
+
+Difference entre index.php et index.html (pour dossier config nginx) :
+index.html :
+- Fichier statique -> deja pret
+- Nginx le lit et l’envoie tel quel au navigateur.
+- Même contenu pour tout le monde (sauf cache/CDN etc.).
+- Pas besoin de PHP-FPM.
+- Exemple : une page maintenance
+
+index.php :
+- Fichier dynamique -> c’est du code PHP.
+- Nginx ne peut pas l’exécuter : il l’envoie à PHP-FPM
+- PHP exécute le code, souvent interagit avec la base de données (WordPress/MariaDB), génère du HTML, puis renvoie le résultat
+- Exemple : WordPress (articles, login, pages qui changent selon l’utilisateur, etc.)
+
+# WordPress :
+WordPress :
+- C’est le site / l’application (CMS).
+- Il génère les pages (accueil, articles, admin, login…).
+
+Il gère :
+- thèmes (design)
+- plugins (fonctions)
+- utilisateurs / permissions
+- contenu (articles, pages, médias)
+- Il est écrit en PHP, donc il a besoin de PHP-FPM pour s’exécuter.
+
+# MariaDB :
+- Gestion de base de donnee (embranchement de mySQL)
+- c'est une copie de mySQL mais en open source
+- WordPress y stocke tout ce qui doit être “persistant” : comptes utilisateurs, mots de passe, articles/pages, etc..
+
+Exemple de fonctionnement base de donnee comme mySQL :
+- La gestion des données est basée sur un modèle de tableaux; toutes les données traitées sur MySQL sont stockées dans des tableaux pouvant être reliés les uns aux autres via des clés
+
 #
 
 # 3. RESSOURCES :
@@ -317,3 +366,9 @@ https://www.nicelydev.com
 https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
 https://www.docker.com/
 https://docs.docker.com/compose/
+
+
+===========================================
+
+Fichier pour DEV_DOC:
+
