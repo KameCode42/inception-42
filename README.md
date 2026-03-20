@@ -1,7 +1,7 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
+# 1. DESCRIPTIONS :
 # Inception :
-Description :
 - Inception est un projet d’administration système dont l’objectif est de mettre en place, dans une machine virtuelle, une petite infrastructure web gérée avec Docker Compose
 - Il consiste à relier plusieurs images Docker et à pouvoir les lancer ensemble, sans pour autant qu’elles perdent leur indépendance (grâce à Docker Compose)
 
@@ -13,8 +13,24 @@ Le projet repose sur plusieurs conteneurs séparés :
 - MariaDB gère la base de données.
 Les services communiquent via un réseau Docker dédié, et les données persistantes (base de données et fichiers WordPress) sont stockées dans des volumes nommés, sauvegardés sur l’hôte dans /home/<login>/data
 
+Le tag latest est interdit :
+- Il faut préciser quelle version est installée
+- Aucun mot de passe ne doit être présent dans vos Dockerfiles.
+- L’utilisation des variables d’environnement est obligatoire.
+- La mise en place d’un fichier .env afin de stocker vos variables d’environnement est fortement conseillée.
+- Le conteneur NGINX doit être le seul point d’entrée de votre infrastructure, via le port 443 uniquement, en utilisant le protocole TLSv1.2 ou TLSv1.3.
+(Le port 443 permet l’accès via https://, et le port 80 via http://.)
+
+## OS différents :
+Alpine Linux :
+- C’est une distribution Linux légère, orientée sécurité. Elle contient le moins de fichiers et d’outils possible afin de laisser au développeur la possibilité de les installer lui-même si besoin.
+
+Debian :
+- C’est un système d’exploitation universel. Les systèmes Debian utilisent actuellement le noyau Linux (et, dans certains cas, le noyau FreeBSD).
+
 #
 
+# 2. INSTRUCTIONS :
 # Docker :
 - Docker permet d'utiliser plusieurs services grâce à des conteneurs. Ces conteneurs sont indépendants les uns des autres, mais pourront communiquer ensemble si nécessaire.
 - Une des forces de Docker, est la possibilité de démarrer et d'arrêter des services très rapidement.
@@ -60,7 +76,8 @@ docker-compose.yml :
 ## Commandes Docker :
 | Commande | Description |
 |---|---|
-| `docker run <mon_image>` | Télécharge l’image si nécessaire et crée un conteneur à partir de cette image. |
+| `docker build -t <mon_image> .` | Construit l'image personnalise grace au Dockerfile |
+| `docker run <mon_image>` | Crée un conteneur à partir de cette image. |
 | `docker run <mon_image> --name=<nom_conteneur>` | Donne un nom au conteneur |
 | `docker run -it <mon_image>` | Lance le conteneur en mode interactif pour pouvoir utiliser la console. |
 | `docker run -it --rm <mon_image>` | Lance le conteneur en mode interactif et le supprime automatiquement à la sortie. |
@@ -91,6 +108,12 @@ docker-compose.yml :
 | `docker network disconnect <NAME_reseau> <nom_conteneur>` | Deconnecte un conteneur du reseau |
 | `docker network rm <NAME_reseau>` | Supprimer un reseau |
 | `docker network inspect <NAME_reseau>` | permet de connaitre les informations du reseau |
+| Compose |
+|---|---|
+| `docker compose up` | Permet d'executer le fichier compose.yml et creer un conteneur |
+| `docker compose up -d` | Fait en sorte que le conteneur ne s'arrete pas |
+| `docker compose stop` | Permet d'arreter le conteneur (dans le dossier ou se trouve le .yml) |
+| `docker compose rm` | Permet de supprimer un conteneur |
 
 ## Les volume dans docker :
 - L'utilisation des volumes permet de garder une trace d'un dossier ou fichier apres la suppression d'un conteneur (exemple : home)
@@ -185,5 +208,112 @@ null :
 | `docker run --network=<NAME> <image>` | relie le conteneur au reseau |
 
 ## Dockerfile :
+- Utile pour creer une image personnalise
+- La commande docker build -t <image> . permet de construire l'image personnalise
+- Avec le mot-cle run, il est possible de lancer des commandes comme apt update ou apt install
+
+| Mot-cle | Description |
+|---|---|
+| `FROM <image>:<version>` | permet d'indiquer sur quelle image de base nous construirons notre propre image personnalisée.|
+| `RUN` | lance une ou plusieurs commandes Linux pendant la phase de construction de notre image. |
+| `COPY <dossier_machine_local> <dossier_conteneur>` | permet de copier un dossier et/ou des fichiers qui se trouvent dans notre machine locale vers le conteneur. |
+| `EXPOSE <port>` | Permet d'indiquer dans quel port le conteneur écoute |
+| `WORKDIR /bin` | Au lancement du conteneur, nous serons positionnés dans le dossier /bin. Pareillement les instructions RUN, ENTRYPOINT, COPY, ADD et CMD seront exécutées à partir de répertoire sélectionné dans WORKDIR. |
+| `VOLUME <dossier_conteneur>` | permet de créer automatiquement un répertoire dans la machine locale et le conteneur qui seront liés. Celui-ci sera automatiquement supprimé à la destruction du conteneur. |
+| `ENV <CLE>="valeur"` | Permet de gérer des variables d'environnement. printenv <CLE> dans le conteneur pour afficher la valeur |
+| `ENTRYPOINT ["cmd_a_lancer", "option"]` | équivaut à demander à Docker de lancer une commande avec option après la création du conteneur. Avec ce mot cle, l'utilisateur ne peut pas modifier l'option de la cmd a lancer lors du lancement du conteneur |
+| `CMD ["option"]` | Donner la possibilité à l'utilisateur de modifier l'option de la commande |
+
+## docker-compose :
+- C'est un outil qui a été développé pour aider à définir et à partager des applications multi-conteneurs.
+- Créer un fichier YAML pour définir les services et, à l'aide d'une seule commande, tout mettre en route ou tout démonter.
+- Compose permet de gérer des applications qui utilisent plusieurs containers et de communiquer entre eux.
+- Pour gerer l'ensemble des containers
 
 
+Conteneu dans un docker-compose :
+
+services:
+- Un service représente une image Docker (par exemple, une image contenant un serveur web, une base de données, etc.). Chaque service peut être configuré avec des options comme :
+
+- Image : l’image Docker à utiliser.
+- Ports : les ports à exposer.
+- Environment : les variables d’environnement.
+- Volumes : les volumes à monter.
+
+Volumes:
+- Les volumes sont utiles pour stocker des données de manière persistante, même si un conteneur est arrêté ou supprimé. Vous pouvez définir vos volumes dans la section volumes.
+
+networks:
+- Ces réseaux personnalisés vous aident à mieux maîtriser la communication entre vos conteneurs. Là encore, c’est facultatif. Vous pouvez vous contenter d’utiliser le réseau par défaut de Docker si vous n’avez pas de configuration réseau spécifique.
+
+
+## Créer un fichier docker-compose.yml :
+exemple simple :
+
+services:
+	<mon_image>:			-> nom de notre image
+		<vrai_image>:		-> image que l'on va utiliser (exemple= :nginx)
+		container_name:		-> donne un nom au conteneur (exemple= :nginx)
+		stdin_open: true	-> permet d'interagir avec le conteneur
+		tty: true 			-> permet d'interagir avec le conteneur
+
+## Volume mappé et managé dans le compose.yml :
+- Va permettre d'enregistrer des donnees meme si un conteneur est supprimer
+
+- Mapper :
+services:
+  <nom du service>:
+    image: <image de base>
+    container_name: <nom du conteneur>
+    stdin_open: true
+    tty: true
+    volumes:
+      - <nom du dossier en local>:<nom du dossier dans le conteneur>
+
+- Manage :
+services:
+  <nom du service>:
+    image: <image de base>
+    container_name: <nom du conteneur>
+    stdin_open: true
+    tty: true
+    volumes:
+      - <nom du volume>:<nom du dossier dans le conteneur>
+
+volumes:
+  <nom du volume>:
+
+
+## Réseau dans le compose.yml
+- Les conteneurs creer dans le compose.yml sont automatiquement connecter a un reseau
+
+services:
+  <nom du service 1>:
+    image: <image de base>
+    container_name: <nom du conteneur 1>
+    stdin_open: true
+    tty: true
+    networks:
+      - <nom du réseau>
+
+  <nom du service 2>:
+    image: <image de base>
+    container_name: <nom du conteneur 2>
+    stdin_open: true
+    tty: true
+    networks:
+      - <nom du réseau>
+
+networks:
+  <nom du réseau>:
+    driver: <type du réseau (pilote)>
+
+#
+
+# 3. RESSOURCES :
+https://tuto.grademe.fr/inception/
+https://www.nicelydev.com
+https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
+https://www.docker.com/
+https://docs.docker.com/compose/
