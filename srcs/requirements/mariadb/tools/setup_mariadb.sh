@@ -1,102 +1,67 @@
 #!/bin/bash
 
-# -e : le script s’arrête si une commande échoue
-# -u : le script s’arrête si une variable non définie est utilisée
-set -eu
+if [ -f /run/secrets/db_root_password ]; then
+	MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+fi
 
-# centralise les chemins importants
-MYSQL_DATA_DIR="/var/lib/mysql"
-MYSQL_SOCKET="/run/mysqld/mysqld.sock"
-MYSQL_PID_FILE="/run/mysqld/mysqld.pid"
+if [ -f /run/secrets/db_password ]; then
+	MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+fi
 
-# lit un secret depuis un fichier et supprime les retours ligne
-read_secret() {
-	tr -d '\r\n' < "$1"
-}
+# verif que le dossier de donnees appartient à l'utilisateur mysql
+mkdir -p /var/lib/mysql
+chown -R mysql:mysql /var/lib/mysql
 
-escape_sql() {
-	printf "%s" "$1" | sed "s/'/''/g"
-}
-
-# si la variable existe, continue, sinon arrete le script avec un message clair
-: "${MYSQL_DATABASE:?MYSQL_DATABASE is not set}"
-: "${MYSQL_USER:?MYSQL_USER is not set}"
-: "${MYSQL_ROOT_PASSWORD_FILE:?MYSQL_ROOT_PASSWORD_FILE is not set}"
-: "${MYSQL_PASSWORD_FILE:?MYSQL_PASSWORD_FILE is not set}"
-
-# lit la vraie valeur du mot de passe
-MYSQL_ROOT_PASSWORD="$(read_secret "$MYSQL_ROOT_PASSWORD_FILE")"
-MYSQL_PASSWORD="$(read_secret "$MYSQL_PASSWORD_FILE")"
-
-MYSQL_ROOT_PASSWORD_SQL="$(escape_sql "$MYSQL_ROOT_PASSWORD")"
-MYSQL_PASSWORD_SQL="$(escape_sql "$MYSQL_PASSWORD")"
-MYSQL_DATABASE_SQL="$(printf "%s" "$MYSQL_DATABASE" | sed 's/`/``/g')"
-
-# preparation des dossiers
-mkdir -p /run/mysqld "$MYSQL_DATA_DIR"
-chown -R mysql:mysql /run/mysqld "$MYSQL_DATA_DIR"
-
-# initialisation seulement si la base système n'existe pas encore
-if [ ! -d "$MYSQL_DATA_DIR/mysql" ]; then
+# si la base de donnees n'est pas init
+if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
 	echo "Initialisation de MariaDB..."
 
-	# initialise le répertoire de donnees MariaDB
-	mariadb-install-db \
-		--user=mysql \
-		--datadir="$MYSQL_DATA_DIR" \
-		--auth-root-authentication-method=socket \
-		--skip-test-db
+	# init la base de donnees si le dossier mysql n'existe pas
+	if [ ! -d "/var/lib/mysql/mysql" ]; then
+		mysql_install_db --user=mysql --datadir=/var/lib/mysql
+	fi
 
-	# demarrage temporaire
-	mariadbd \
-		--user=mysql \
-		--datadir="$MYSQL_DATA_DIR" \
-		--socket="$MYSQL_SOCKET" \
-		--pid-file="$MYSQL_PID_FILE" \
-		--skip-networking &
-	temp_pid="$!"
+	# demarre MariaDB pour la configuration
+	mysqld --user=mysql --datadir=/var/lib/mysql --skip-networking &
+	MYSQL_PID=$!
 
-	# met en attente le serveur pour eviter un echec
-	i=0
-	while ! mariadb-admin --socket="$MYSQL_SOCKET" ping >/dev/null 2>&1; do
-		i=$((i + 1))
-		if [ "$i" -ge 30 ]; then
-			echo "Temporary MariaDB server failed to start."
-			kill "$temp_pid" 2>/dev/null || true
-			exit 1
+	echo "Attente du demarrage de MariaDB..."
+	for i in {1..30}; do
+		if mysqladmin ping --silent; then
+			echo "MariaDB est pret !"
+			break
 		fi
 		sleep 1
 	done
 
-	echo "Configuration de mariadb"
+	# configure MariaDB
+	echo "Configuration de MariaDB..."
+	mysql -u root << EOF
+-- Definit le mot de passe root
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 
-	mariadb --socket="$MYSQL_SOCKET" <<EOF
--- Definie le mot de passe root
-ALTER USER 'root'@'localhost'
-	IDENTIFIED VIA mysql_native_password
-	USING PASSWORD('${MYSQL_ROOT_PASSWORD_SQL}');
-
--- Creer la base applicative utilisée par WordPress
-CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE_SQL}\`;
+-- Cree la base de donnees WordPress
+CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
 
 -- Cree l'utilisateur WordPress
-CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%'
-	IDENTIFIED BY '${MYSQL_PASSWORD_SQL}';
+CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 
 -- Donne tous les privileges sur la base WordPress
-GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE_SQL}\`.* TO '${MYSQL_USER}'@'%';
+GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
+
+-- Supprime les utilisateurs anonymes
+DELETE FROM mysql.user WHERE User='';
 
 -- Applique les changements
 FLUSH PRIVILEGES;
 EOF
+	
+	echo "Configuration terminee."
 
-	echo "Stopping temporary MariaDB server..."
-	mariadb-admin --socket="$MYSQL_SOCKET" -uroot -p"${MYSQL_ROOT_PASSWORD}" shutdown
+	mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
+	wait $MYSQL_PID
 fi
 
-echo "Demarrage de mariadb"
-exec mariadbd \
-	--user=mysql \
-	--datadir="$MYSQL_DATA_DIR" \
-	--socket="$MYSQL_SOCKET" \
-	--pid-file="$MYSQL_PID_FILE"
+# lance MariaDB en foreground (PID 1)
+echo "Demarrage de MariaDB..."
+exec mysqld --user=mysql --datadir=/var/lib/mysql

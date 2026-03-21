@@ -1,15 +1,13 @@
 services:
   mariadb:
     image: mariadb
+    container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
     secrets:
       - db_root_password
       - db_password
@@ -20,6 +18,7 @@ services:
 
   wordpress:
     image: wordpress
+    container_name: wordpress
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
@@ -28,10 +27,6 @@ services:
       - mariadb
     env_file:
       - .env
-    environment:
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
-      WP_ADMIN_PASSWORD_FILE: /run/secrets/wp_admin_password
-      WP_USER_PASSWORD_FILE: /run/secrets/wp_user_password
     secrets:
       - db_password
       - wp_admin_password
@@ -43,6 +38,7 @@ services:
 
   nginx:
     image: nginx
+    container_name: nginx
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
@@ -54,7 +50,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - wordpress_data:${WP_PATH}:ro
+      - wordpress_data:${WP_PATH}
     networks:
       - inception
 

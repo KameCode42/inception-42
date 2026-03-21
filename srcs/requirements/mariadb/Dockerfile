@@ -1,8 +1,8 @@
 FROM		debian:bookworm
 
 # Installe le server mariadb
-RUN 		apt-get update && apt-get install -y \
-			mariadb-server \
+RUN 		apt-get update -y && apt-get upgrade -y \
+			&& apt-get install mariadb-server -y \
 			&& rm -rf /var/lib/apt/lists/*
 
 # Creer les dossiers utiles à MariaDB
