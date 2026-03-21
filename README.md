@@ -367,9 +367,3 @@ https://www.nicelydev.com
 https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
 https://www.docker.com/
 https://docs.docker.com/compose/
-
-
-===========================================
-
-Fichier pour DEV_DOC:
-

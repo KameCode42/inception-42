@@ -1,4 +1,4 @@
-# Ignore local secrets
+# Ignore les secrets local
 secrets/*
 !secrets/.gitkeep
 
