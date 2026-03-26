@@ -1,4 +1,6 @@
-# CREATION DE FICHIER
+Ce projet a été créé dans le cadre du cursus 42 par dle-fur
+
+# Mise en place des conteneurs
 
 ## Construire .env :
 | Variable | Description |
@@ -51,8 +53,7 @@ en utilisant le fichier Dockerfile |
 
 ## Construire mariadb :
 Dockerfile :
-RUN :
-chmod +x /usr/local/bin/setup_mariadb.sh :
+RUN chmod +x /usr/local/bin/setup_mariadb.sh :
 - Rend le script exécutable
 
 mkdir -p /run/mysqld /var/lib/mysql :
@@ -95,4 +96,48 @@ tools/setup_mariadb.sh :
 - lancer mariadbd au premier plan
 
 ## Construire nginx :
+Dockerfile :
+- installer nginx et openssl pour TSL
+- creer un dossier pour stocker la clef et le certificat
+- copie le script de lancement
+- EXPOSE 443 = port d'entree nginx
+
+=================================
+
+generate_ssh.sh :
+- script qui permet de generer un certificat auto-signe si il n'existe pas
+- commande req crée et traite principalement des demandes de certificats et peut créer des certificats auto-signés
+
+| Mot-cle | Description |
+|---|---|
+| `-x509` | précise le type du certificat (ici format standard) |
+| `-nodes` | permet de creer une clef sans mot de passe |
+| `-keyout` | stocke la clef |
+| `-out` | stocke le certificat |
+| `-subj` | rempli automatiquement le certificat |
+| `-subj` | rempli automatiquement le certificat |
+| `-daemon off` | garde Nginx actif au premier plan |
+
+=================================
+
+nginx.conf :
+- permet de parametrer nginx pour le ssl
+- ajouter un nombre de connections max
+- inclure mime.type pour gerer les extensions (HTML, CSS, etc...)
+- configurer SSL/TLS
+- gerer les requetes inconnus
+- gerer le code php et renvoyer sur le port de wordpress
+
+
+
+
+
+
+
+
+
+
+
+
+
 

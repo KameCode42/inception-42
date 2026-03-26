@@ -1,12 +1,12 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
-# 1. DESCRIPTIONS :
+# 1. Descriptions :
 # Inception :
 - Inception est un projet d’administration système dont l’objectif est de mettre en place, dans une machine virtuelle, une petite infrastructure web gérée avec Docker Compose
 - Il consiste à relier plusieurs images Docker et à pouvoir les lancer ensemble, sans pour autant qu’elles perdent leur indépendance (grâce à Docker Compose)
 
 Le projet repose sur plusieurs conteneurs séparés :
-- NGINX sert de point d’entrée unique en HTTPS (TLS 1.2/1.3) sur le port 443
+- NGINX sert de point d’entrée unique en HTTPS (TSL 1.2/1.3) sur le port 443
 
 - WordPress fonctionne avec PHP-FPM (sans NGINX)
 
@@ -18,7 +18,7 @@ Le tag latest est interdit :
 - Aucun mot de passe ne doit être présent dans vos Dockerfiles.
 - L’utilisation des variables d’environnement est obligatoire.
 - La mise en place d’un fichier .env afin de stocker vos variables d’environnement est fortement conseillée.
-- Le conteneur NGINX doit être le seul point d’entrée de votre infrastructure, via le port 443 uniquement, en utilisant le protocole TLSv1.2 ou TLSv1.3.
+- Le conteneur NGINX doit être le seul point d’entrée de votre infrastructure, via le port 443 uniquement, en utilisant le protocole TSLv1.2 ou TSLv1.3.
 (Le port 443 permet l’accès via https://, et le port 80 via http://.)
 
 ## OS différents :
@@ -30,7 +30,7 @@ Debian :
 
 #
 
-# 2. INSTRUCTIONS :
+# 2. Instructions :
 # Docker :
 - Docker permet d'utiliser plusieurs services grâce à des conteneurs. Ces conteneurs sont indépendants les uns des autres, mais pourront communiquer ensemble si nécessaire.
 - Une des forces de Docker, est la possibilité de démarrer et d'arrêter des services très rapidement.
@@ -315,11 +315,11 @@ NGINX (la porte d’entrée) :
 - reçoit les requêtes HTTP/HTTPS (navigateur → serveur)
 - renvoie des fichiers statiques (HTML/CSS/JS/images)
 - rediriger les requêtes dynamiques (ex: .php) vers un autre service (ex: PHP-FPM)
-- gére SSL/TLS, redirections, cache, reverse proxy, etc.
+- gére SSL/TSL, redirections, cache, reverse proxy, etc.
 
-TLS :
+TSL :
 - C’est un protocole qui sécurise les échanges sur un réseau informatique, notamment sur Internet.
-TLS permet :
+TSL permet :
 - L’authentification du serveur
 - La confidentialité des données échangées (session chiffrée)
 - L’intégrité des données échangées
@@ -361,7 +361,7 @@ Exemple de fonctionnement base de donnee comme mySQL :
 
 #
 
-# 3. RESSOURCES :
+# 3. Ressources :
 https://tuto.grademe.fr/inception/
 https://www.nicelydev.com
 https://dev.to/alejiri/docker-nginx-wordpress-mariadb-tutorial-inception42-1eok
