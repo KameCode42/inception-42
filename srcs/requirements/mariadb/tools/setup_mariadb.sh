@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 if [ -f /run/secrets/db_root_password ]; then
 	MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)

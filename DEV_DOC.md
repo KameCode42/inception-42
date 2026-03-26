@@ -94,3 +94,5 @@ tools/setup_mariadb.sh :
 - créer la base WordPress et l’utilisateur SQL au premier lancement
 - lancer mariadbd au premier plan
 
+## Construire nginx :
+
