@@ -1,33 +1,35 @@
 COMPOSE_FILE = srcs/docker-compose.yml
-ENV_FILE = srcs/.env
-COMPOSE = docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE)
-
 DATA_DIR = $(HOME)/data
-DOMAIN_NAME = $(shell grep '^DOMAIN_NAME=' $(ENV_FILE) | cut -d '=' -f2)
 
 all: setup build up
 
+# prépare les dossiers, configure le nom de domaine local
 setup:
 	@mkdir -p $(DATA_DIR)/mariadb $(DATA_DIR)/wordpress
-	@grep -q "$(DOMAIN_NAME)" /etc/hosts || echo "127.0.0.1 $(DOMAIN_NAME)" | sudo tee -a /etc/hosts
+	@grep -q "astoll.42.fr" /etc/hosts || echo "127.0.0.1 astoll.42.fr" | sudo tee -a /etc/hosts
 
+# construit les images
 build:
-	@$(COMPOSE) build
+	@docker-compose -f $(COMPOSE_FILE) build
 
+# démarre les conteneurs
 up:
-	@$(COMPOSE) up -d
+	@docker-compose -f $(COMPOSE_FILE) up -d
 
+# arrête les conteneurs
 down:
-	@$(COMPOSE) down
+	@docker-compose -f $(COMPOSE_FILE) down
 
+# nettoie Docker sans supprimer tes dossiers de données locaux
 clean: down
 	@docker system prune -af
 
+# nettoie Docker avec volumes, vide les données MariaDB et WordPress
 fclean: down
 	@docker system prune -af --volumes
-	@sudo find $(DATA_DIR)/mariadb -mindepth 1 -delete 2>/dev/null || true
-	@sudo find $(DATA_DIR)/wordpress -mindepth 1 -delete 2>/dev/null || true
+	@sudo rm -rf $(DATA_DIR)/mariadb/* $(DATA_DIR)/wordpress/*
 
+# supprime tout, recrée tout
 re: fclean all
 
-.PHONY: all setup build up down clean fclean re
+.PHONY: all build up down clean fclean re

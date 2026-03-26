@@ -1,10 +1,10 @@
 FROM		debian:bookworm
 
 # Installe nginx et openssl pour TLS
-RUN			apt-get update -y \
-			&& apt-get install nginx -y \
-			&& apt-get install openssl -y \
-			&& rm -rf /var/lib/apt/lists/*
+RUN			apt-get update -y && apt-get upgrade -y && \
+			apt-get install nginx -y && \
+			apt-get install openssl -y && \
+			rm -rf /var/lib/apt/lists/*
 
 # stocker le certificat et la clef pour une connexion sécurisée
 RUN			mkdir -p /etc/nginx/ssl /var/www/html

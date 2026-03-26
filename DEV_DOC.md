@@ -128,6 +128,8 @@ nginx.conf :
 - gerer les requetes inconnus
 - gerer le code php et renvoyer sur le port de wordpress
 
+## Construire wordpress :
+Dockerfile :
 
 
 
