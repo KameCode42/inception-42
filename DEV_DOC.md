@@ -127,13 +127,33 @@ nginx.conf :
 - configurer SSL/TLS
 - gerer les requetes inconnus
 - gerer le code php et renvoyer sur le port de wordpress
+- fastcgi : canal utilisé pour que nginx envoie les requêtes PHP à php-fpm sur le port 9000
 
 ## Construire wordpress :
 Dockerfile :
+- installation des differents services php
+- php-fpm : programme qui exécute le PHP côté serveur
 
+| Service | Description |
+|---|---|
+| `php-fpm` | coeur du service, exécute le PHP pour nginx |
+| `php-cli` | utile pour les scripts d’installation et pour l’automatisation autour de WordPress |
+| `php-mysql` | indispensable pour que WordPress parle à MariaDB |
+| `curl` | utile pour récupérer WordPress ou d’autres outils dans le script d’installation |
+| `mariadb-client` | utile pour tester la disponibilité de MariaDB depuis le conteneur WordPress |
+| `ca-certificates` | pratique dès qu’on télécharge quelque chose en HTTPS |
+| `tar` | utile si le script télécharge l’archive WordPress et la décompresse |
 
+=================================
 
+www.conf :
+- servira à configurer PHP-FPM pour écouter sur le bon port et au bon endroit
+- fixe un nombre maximal de equete et de reserve
+- garde toutes les variables d'environnement disponible
 
+=================================
+
+setup_wordpress.sh :
 
 
 

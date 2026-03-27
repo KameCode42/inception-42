@@ -1,15 +1,29 @@
 FROM		debian:bookworm
 
+# Installe les services utiles
 RUN 		apt-get update -y && apt-get upgrade -y && \
-			apt-get -y install wget && \
-			apt-get install -y \
-			php8.3-fpm \
-			php8.3-mysql \
+			apt-get -y install wget && apt-get install -y \
+			php-fpm \
+			php-cli \
+			php-mysql \
+			curl \
 			mariadb-client \
+			ca-certificates \
+			tar \
 			&& rm -rf /var/lib/apt/lists/*
 
+# Point de montage du volume WordPress
+RUN			mkdir -p /run/php /var/www/html && chmod 755 /var/www/html
 
+# Copie le fichier de conf
+COPY		conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
+# Copie le script
+COPY		tools/setup_wordpress.sh /usr/local/bin/setup_wordpress.sh
+RUN			chmod +x /usr/local/bin/setup_wordpress.sh
 
+# PHP-FPM écoutera sur 9000 dans le conteneur
+EXPOSE		9000
 
-ENTRYPOINT	["/usr/local/bin/setup.sh"]
+# lance wordpress via le script
+ENTRYPOINT	["/usr/local/bin/setup_wordpress.sh"]
