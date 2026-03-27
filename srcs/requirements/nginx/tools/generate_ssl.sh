@@ -10,9 +10,9 @@ if [ ! -f /etc/nginx/ssl/nginx.crt ]; then
 		-keyout /etc/nginx/ssl/nginx.key \
 		-out /etc/nginx/ssl/nginx.crt \
 		-subj "/C=FR/ST=France/L=Paris/O=42/CN=${DOMAIN_NAME}" 2>/dev/null
-
-echo "Demarrage Nginx..."
+fi
 
 # lance nginx en foreground (PID 1)
 # daemon off : garde nginx actif au premier plan
+echo "Demarrage Nginx..."
 exec nginx -g "daemon off;"

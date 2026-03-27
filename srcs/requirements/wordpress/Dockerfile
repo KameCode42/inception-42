@@ -2,7 +2,7 @@ FROM		debian:bookworm
 
 # Installe les services utiles
 RUN 		apt-get update -y && apt-get upgrade -y && \
-			apt-get -y install wget && apt-get install -y \
+			apt-get install -y \
 			php-fpm \
 			php-cli \
 			php-mysql \
@@ -13,8 +13,8 @@ RUN 		apt-get update -y && apt-get upgrade -y && \
 			&& rm -rf /var/lib/apt/lists/*
 
 # Automatise l’installation et l’administration de WordPress
-RUN			curl -L -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN			chmod +x /usr/local/bin/wp
+RUN			curl -L -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+			chmod +x /usr/local/bin/wp
 
 # Point de montage du volume WordPress
 RUN			mkdir -p /run/php /var/www/html && chmod 755 /var/www/html

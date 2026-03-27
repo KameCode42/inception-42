@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-WP_PATH="/var/www/html"
+WP_PATH="${WP_PATH:-/var/www/html}"
 
 # Enlève les retours ligne
 read_secret() {
@@ -76,7 +76,7 @@ if ! wp user get "$WP_USER" --path="$WP_PATH" --allow-root >/dev/null 2>&1; then
 		--allow-root
 fi
 
-echo "WordPress installé avec succès !"
+echo "WordPress prêt."
 
 chown -R www-data:www-data "$WP_PATH"
 
