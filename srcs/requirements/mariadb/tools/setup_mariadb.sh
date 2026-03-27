@@ -35,16 +35,18 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	MYSQL_PID=$!
 
 	echo "Attente du demarrage de MariaDB..."
+	READY=0
 	for i in {1..30}; do
-		if mysqladmin ping --silent; then
+		if mysqladmin --socket="$MYSQL_SOCKET" ping --silent >/dev/null 2>&1; then
 			echo "MariaDB est pret !"
+			READY=1
 			break
 		fi
 		sleep 1
 	done
 
 	# si apres 30 essais ca ne repond pas, on echoue proprement
-	if mysqladmin --socket="$MYSQL_SOCKET" ping --silent; then
+	if [ "$READY" -ne 1 ]; then
 		echo "Erreur : MariaDB n'a pas demarre correctement."
 		kill "$MYSQL_PID" 2>/dev/null || true
 		exit 1

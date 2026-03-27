@@ -1,9 +1,10 @@
 FROM		debian:bookworm
 
 # Installe le server mariadb
-RUN 		apt-get update -y && apt-get upgrade -y && \
-			apt-get install mariadb-server -y && \
-			rm -rf /var/lib/apt/lists/*
+RUN 		apt-get update && \
+			apt-get install -y mariadb-server && \
+			rm -rf /var/lib/apt/lists/* && \
+			rm -rf /var/lib/mysql/*
 
 # Creer les dossiers utiles à MariaDB
 RUN			mkdir -p /run/mysqld /var/lib/mysql && \
