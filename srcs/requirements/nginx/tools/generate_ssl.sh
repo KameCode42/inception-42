@@ -11,7 +11,7 @@ if [ ! -f /etc/nginx/ssl/nginx.crt ]; then
 		-out /etc/nginx/ssl/nginx.crt \
 		-subj "/C=FR/ST=France/L=Paris/O=42/CN=${DOMAIN_NAME}" 2>/dev/null
 
-echo "Starting Nginx..."
+echo "Demarrage Nginx..."
 
 # lance nginx en foreground (PID 1)
 # daemon off : garde nginx actif au premier plan

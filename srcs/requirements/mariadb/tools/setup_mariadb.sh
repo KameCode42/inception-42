@@ -64,5 +64,5 @@ EOF
 fi
 
 # lance MariaDB en foreground (PID 1)
-echo "Demarrage de MariaDB..."
+echo "Demarrage MariaDB..."
 exec mysqld --user=mysql --datadir=/var/lib/mysql

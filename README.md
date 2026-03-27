@@ -4,13 +4,13 @@ Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 - [Inception](#inception-)
 - [OS différents](#os-différents-)
 - [Docker](#docker-)
-- [Composants Docker](#les-differents-composants-docker-)
+- [Composants Docker](#les-différents-composants-docker-)
 - [Commandes Docker](#commandes-docker-)
-- [Volume docker](#les-volume-dans-docker-)
+- [Volume docker](#les-volumes-dans-docker-)
 - [Mapper un volume](#mapper-un-volume-)
 - [Manager un volume](#manager-un-volume-)
 - [Mapper des ports](#mapper-des-ports-)
-- [Conteneurs connectes](#conteneurs-connectes-)
+- [Conteneurs connectés](#conteneurs-connectés-)
 - [Réseau](#réseau-)
 - [Dockerfile](#dockerfile-)
 - [docker-compose](#docker-compose-)
@@ -54,50 +54,50 @@ Debian :
 # 2. Instructions :
 # Docker :
 - Docker permet d'utiliser plusieurs services grâce à des conteneurs. Ces conteneurs sont indépendants les uns des autres, mais pourront communiquer ensemble si nécessaire.
-- Une des forces de Docker, est la possibilité de démarrer et d'arrêter des services très rapidement.
+- Une des forces de Docker est la possibilité de démarrer et d'arrêter des services très rapidement.
 
-Avantage docker :
+Avantage Docker :
 - Compatible avec tous les environnements
 - Chaque conteneur tourne séparément
 - Lancement rapide des conteneurs
-- Plus leger qu'une machine virtuelle
-- Creer plusieurs conteneurs qui sont baser sur une image
-- Creer un server web facilement
+- Plus léger qu'une machine virtuelle
+- Créer plusieurs conteneurs qui sont basés sur une image
+- Créer un serveur web facilement
 
 Différences entre VM et conteneur :
 
 Conteneur :
-- Le conteneur empaqute l'appli + les dependances, tourne comme un process isoler sur le meme noyau que l'hote (partage le noyau)
-- Leger, rapide a demarrer
+- Le conteneur empaquette l'appli + les dépendances, tourne comme un processus isolé sur le même noyau que l'hôte (partage le noyau)
+- Léger, rapide à démarrer
 
 VM :
-- Virutalise une machine entiere et a son propre systeme d'exploitation avec noyau
+- Virtualise une machine entière et a son propre système d'exploitation avec noyau
 - Plus lourd et plus lent
 
-## Les differents composants Docker :
+## Les différents composants Docker :
 Conteneur :
-- Un conteneur est une instance de l'image. Lorsque l'image est lancee, ca creer un conteneur qui a un process, un etat
-- Un conteneur est construit grace a une image
-- Il est possible de lancer plusieurs conteneur sur la meme image
+- Un conteneur est une instance de l'image. Lorsque l'image est lancée, ça crée un conteneur qui a un processus, un état
+- Un conteneur est construit grâce à une image
+- Il est possible de lancer plusieurs conteneurs sur la même image
 
 Image :
-- Une image contient toutes les informations pour la creation d'un conteneur. Le code, les dependances, une configuration de demarrage etc.
-- Le conteneur va se baser sur une image pour se creer
-- Une image personnaliser est toujours baser sur une image qui existe deja
+- Une image contient toutes les informations pour la création d'un conteneur. Le code, les dépendances, une configuration de démarrage, etc.
+- Le conteneur va se baser sur une image pour se créer
+- Une image personnalisée est toujours basée sur une image qui existe déjà
 
 Dockerfile :
-- Le dockerfile permet de creer une image personnaliser afin d etre utiliser pour creer des conteneur.
+- Le Dockerfile permet de créer une image personnalisée afin d'être utilisée pour créer des conteneurs.
 
 docker-compose.yml :
 - C'est un outil qui a été développé pour aider à définir et à partager des applications multi-conteneurs.
 - Créer un fichier YAML pour définir les services et, à l'aide d'une seule commande, tout mettre en route ou tout démonter.
-- Compose permet de gérer des applications qui utilisent plusieurs containers et de communiquer entre eux.
-- Pour gerer l'ensemble des containers
+- Compose permet de gérer des applications qui utilisent plusieurs conteneurs et de communiquer entre eux.
+- Pour gérer l'ensemble des conteneurs
 
 ## Commandes Docker :
 | Commande | Description |
 |---|---|
-| `docker build -t <mon_image> .` | Construit l'image personnalise grace au Dockerfile |
+| `docker build -t <mon_image> .` | Construit l'image personnalisée grâce au Dockerfile |
 | `docker run <mon_image>` | Crée un conteneur à partir de cette image. |
 | `docker run <mon_image> --name=<nom_conteneur>` | Donne un nom au conteneur |
 | `docker run -it <mon_image>` | Lance le conteneur en mode interactif pour pouvoir utiliser la console. |
@@ -114,104 +114,104 @@ docker-compose.yml :
 | `docker exec <id_conteneur> touch index.js` | Exécute une commande dans un conteneur sans y entrer. |
 | Volume |
 |---|---|
-| `docker volume create <mon_volume>` | permet de creer un volume dans docker |
+| `docker volume create <mon_volume>` | permet de créer un volume dans Docker |
 | `docker volume ls` | liste les volumes |
 | `docker volume rm <mon_volume>` | supprimer un volume |
-| `docker volume inspect <mon_volume>` | permet de connaitre des details sur le volume |
+| `docker volume inspect <mon_volume>` | permet de connaître des détails sur le volume |
 | Port |
 |---|---|
 | `docker run -p <port_local>:<port_conteneur> <mon_image>` | permet de mapper des ports |
-| Reseau |
+| Réseau |
 |---|---|
-| `docker network ls` | liste les reseaux docker|
-| `docker network create --driver=<DRIVER> <mon_nom_reseau>` | Creer un reseau personnalise |
-| `docker run --network=<NAME_reseau> <image>` | Creer un conteneur et le relie au reseau |
-| `docker network disconnect <NAME_reseau> <nom_conteneur>` | Deconnecte un conteneur du reseau |
-| `docker network rm <NAME_reseau>` | Supprimer un reseau |
-| `docker network inspect <NAME_reseau>` | permet de connaitre les informations du reseau |
+| `docker network ls` | liste les réseaux Docker |
+| `docker network create --driver=<DRIVER> <mon_nom_reseau>` | Créer un réseau personnalisé |
+| `docker run --network=<NAME_reseau> <image>` | Créer un conteneur et le relie au réseau |
+| `docker network disconnect <NAME_reseau> <nom_conteneur>` | Déconnecte un conteneur du réseau |
+| `docker network rm <NAME_reseau>` | Supprimer un réseau |
+| `docker network inspect <NAME_reseau>` | permet de connaître les informations du réseau |
 | Compose |
 |---|---|
-| `docker compose up` | Permet d'executer le fichier compose.yml et creer un conteneur |
-| `docker compose up -d` | Fait en sorte que le conteneur ne s'arrete pas |
-| `docker compose stop` | Permet d'arreter le conteneur (dans le dossier ou se trouve le .yml) |
+| `docker compose up` | Permet d'exécuter le fichier compose.yml et créer un conteneur |
+| `docker compose up -d` | Fait en sorte que le conteneur ne s'arrête pas |
+| `docker compose stop` | Permet d'arrêter le conteneur (dans le dossier où se trouve le .yml) |
 | `docker compose rm` | Permet de supprimer un conteneur |
 
-## Les volume dans docker :
-- L'utilisation des volumes permet de garder une trace d'un dossier ou fichier apres la suppression d'un conteneur (exemple : home)
-- Ce dossier pourra etre reutiliser dans un autre conteneur
-- Utile pour les bases de donnees afin de les garder en memoire
+## Les volumes dans Docker :
+- L'utilisation des volumes permet de garder une trace d'un dossier ou fichier après la suppression d'un conteneur (exemple : home)
+- Ce dossier pourra être réutilisé dans un autre conteneur
+- Utile pour les bases de données afin de les garder en mémoire
 - Utile pour les fichiers de configuration, exemple nginx
 
 ## Mapper un volume :
-- Permet de copier du contenu qui se trouve dans la machine local(dossier) vers le conteneur(dossier). Ils sont en relation.
-- Ce contenu peut etre modifier directement dans le conteneur.
-- Une fois le conteneur supprimer, le contenu modifier dans celui ci est enregistrer dans le contenu de la machine local.
-- En resume c est le dossier de la machine local qui prend le dessus
+- Permet de copier du contenu qui se trouve dans la machine locale (dossier) vers le conteneur (dossier). Ils sont en relation.
+- Ce contenu peut être modifié directement dans le conteneur.
+- Une fois le conteneur supprimé, le contenu modifié dans celui-ci est enregistré dans le contenu de la machine locale.
+- En résumé c'est le dossier de la machine locale qui prend le dessus
 
 exemple :
-- Mapper(copier) un dossier test qui se trouve dans la machine local dans un dossier home du conteneur, tous le contenu qui se trouve dans le dossier test de la machine local se retrouvera dans le dossier home du conteneur
-- Dans le cas ou le fichier qui se trouve dans le dossier home du conteneur est modifier et enregistrer, le conteneur peut etre supprimer. Les modifications seront enregistrer dans le dossier test de la machine local.
+- Mapper (copier) un dossier test qui se trouve dans la machine locale dans un dossier home du conteneur, tout le contenu qui se trouve dans le dossier test de la machine locale se retrouvera dans le dossier home du conteneur
+- Dans le cas où le fichier qui se trouve dans le dossier home du conteneur est modifié et enregistré, le conteneur peut être supprimé. Les modifications seront enregistrées dans le dossier test de la machine locale.
 
 | Commande | Description |
 |---|---|
-| `docker run -it --rm -v /home/david/docker/test:/test-docker ubuntu:24.04` | Le dossier de la machine local /home/david/docker/test est monté dans le conteneur dans /test-docker |
+| `docker run -it --rm -v /home/david/docker/test:/test-docker ubuntu:24.04` | Le dossier de la machine locale /home/david/docker/test est monté dans le conteneur dans /test-docker |
 
 ## Manager un volume :
-- A la difference de mapper, il faut creer un volume dans docker
-- Le volume creer recupere le contenu auquel il a ete relier
-- Si le conteneur est supprimer les fichier du volume ne sont pas supprimer
-- Si on relie a un autre dossier vide, celui ci contiendra tous les fichiers du volumes
-- Si on relie un volume a un dossier avec du contenu, le contenu du dossier est remplacer par celui du volume
+- À la différence de mapper, il faut créer un volume dans Docker
+- Le volume créé récupère le contenu auquel il a été relié
+- Si le conteneur est supprimé les fichiers du volume ne sont pas supprimés
+- Si on le relie à un autre dossier vide, celui-ci contiendra tous les fichiers du volume
+- Si on relie un volume à un dossier avec du contenu, le contenu du dossier est remplacé par celui du volume
 
 <img width="366" height="234" alt="Image" src="https://github.com/user-attachments/assets/57209862-3d4e-4df7-bb30-41f6d953a481" />
 
 | Commande | Description |
 |---|---|
-| `docker volume create <mon_volume>` | permet de creer un volume dans docker |
+| `docker volume create <mon_volume>` | permet de créer un volume dans Docker |
 | `docker volume ls` | liste les volumes |
 | `docker volume rm <mon_volume>` | supprimer un volume |
 | `docker run -it --rm -v <mon_volume>:/bin ubuntu:24.04` | manager un volume dans le conteneur |
-| `docker volume inspect <mon_volume>` | permet de connaitre des details sur le volume |
+| `docker volume inspect <mon_volume>` | permet de connaître des détails sur le volume |
 
 ## Mapper des ports :
-- Un conteneur emet des donnee via un port que l'on peut recuperer
-- Le port de la machine locale doit etre libre
-- Un conteneur emet un port par defaut
+- Un conteneur émet des données via un port que l'on peut récupérer
+- Le port de la machine locale doit être libre
+- Un conteneur émet un port par défaut
 - L'option -p permet de mapper des ports
 - Exemple test navigateur : <http://localhost:9000>
 
 docker run -p 9000:80 nginx
-- en premier le port de la machine local(doit etre libre) et en deuxieme, le port du conteneur
-- permet de mapper un port pour nginx, 9000 port de la machine local et 80 port d'entree de nginx
+- en premier le port de la machine locale (doit être libre) et en deuxième, le port du conteneur
+- permet de mapper un port pour nginx, 9000 port de la machine locale et 80 port d'entrée de nginx
 
-## Conteneurs connectes :
+## Conteneurs connectés :
 - Pour que des conteneurs puissent communiquer, il faut installer deux programmes dans chaque conteneur, ping et ip.
-- Communique par adresse ip
-- Les conteneurs sont relie entre eux par defaut
+- Communique par adresse IP
+- Les conteneurs sont reliés entre eux par défaut
 
 ping :
-- permet de communiquer et d'envoyer des paquets a un conteneur specifique
+- permet de communiquer et d'envoyer des paquets à un conteneur spécifique
 
 ip :
-- permet de recevoir des informations qui est l'ip d'une machine ou d'un conteneur
+- permet de recevoir des informations, quelle est l'IP d'une machine ou d'un conteneur
 
 | Commande | Description |
 |---|---|
-| `apt update` | met a jour les paquets |
+| `apt update` | met à jour les paquets |
 | `apt install -y iputils-ping` | installe ping |
 | `apt install -y iproute2` | installe ip |
-| `ping -h` | controle que ping soit installer |
-| `ip -h` | controle que ping soit installer |
-| `ip -c a` |  recuperer l ip de chaque conteneur |
+| `ping -h` | contrôle que ping soit installé |
+| `ip -h` | contrôle que ping soit installé |
+| `ip -c a` | récupérer l'IP de chaque conteneur |
 | `ping <ip_autre_conteneur>` | communiquer avec un conteneur |
 
 ## Réseau :
-- Utilisation de l'option --network qui permet de relier un conteneur a un reseau
-- Sans l'option --network, le conteneur est connecter automatiquement au reseau normal de docker
+- Utilisation de l'option --network qui permet de relier un conteneur à un réseau
+- Sans l'option --network, le conteneur est connecté automatiquement au réseau normal de Docker
 
 | Commande | Description |
 |---|---|
-| `docker network ls` | liste les reseaux docker|
+| `docker network ls` | liste les réseaux Docker |
 
 | NETWORKD ID  | NAME   | DRIVER | SCOPE |
 |--------------|--------|--------|-------|
@@ -219,40 +219,39 @@ ip :
 | d7b51185ef1e | none   | null   | local |
 
 bridge :
-- reseau par defaut de docker
+- réseau par défaut de Docker
 
 null :
-- signifique qu il n est connecter a aucun reseau
+- signifie qu'il n'est connecté à aucun réseau
 
 | Commande | Description |
 |---|---|
-| `docker run --network=<NAME> <image>` | relie le conteneur au reseau |
+| `docker run --network=<NAME> <image>` | relie le conteneur au réseau |
 
 ## Dockerfile :
-- Utile pour creer une image personnalise
-- La commande docker build -t <image> . permet de construire l'image personnalise
-- Avec le mot-cle run, il est possible de lancer des commandes comme apt update ou apt install
+- Utile pour créer une image personnalisée
+- La commande docker build -t <image> . permet de construire l'image personnalisée
+- Avec le mot-clé run, il est possible de lancer des commandes comme apt update ou apt install
 
-| Mot-cle | Description |
+| Mot-clé | Description |
 |---|---|
 | `FROM <image>:<version>` | permet d'indiquer sur quelle image de base nous construirons notre propre image personnalisée.|
 | `RUN` | lance une ou plusieurs commandes Linux pendant la phase de construction de notre image. |
 | `COPY <dossier_machine_local> <dossier_conteneur>` | permet de copier un dossier et/ou des fichiers qui se trouvent dans notre machine locale vers le conteneur. |
 | `EXPOSE <port>` | Permet d'indiquer dans quel port le conteneur écoute |
-| `WORKDIR /bin` | Au lancement du conteneur, nous serons positionnés dans le dossier /bin. Pareillement les instructions RUN, ENTRYPOINT, COPY, ADD et CMD seront exécutées à partir de répertoire sélectionné dans WORKDIR. |
+| `WORKDIR /bin` | Au lancement du conteneur, nous serons positionnés dans le dossier /bin. Pareillement, les instructions RUN, ENTRYPOINT, COPY, ADD et CMD seront exécutées à partir du répertoire sélectionné dans WORKDIR. |
 | `VOLUME <dossier_conteneur>` | permet de créer automatiquement un répertoire dans la machine locale et le conteneur qui seront liés. Celui-ci sera automatiquement supprimé à la destruction du conteneur. |
 | `ENV <CLE>="valeur"` | Permet de gérer des variables d'environnement. printenv <CLE> dans le conteneur pour afficher la valeur |
-| `ENTRYPOINT ["cmd_a_lancer", "option"]` | équivaut à demander à Docker de lancer une commande avec option après la création du conteneur. Avec ce mot cle, l'utilisateur ne peut pas modifier l'option de la cmd a lancer lors du lancement du conteneur |
+| `ENTRYPOINT ["cmd_a_lancer", "option"]` | équivaut à demander à Docker de lancer une commande avec option après la création du conteneur. Avec ce mot-clé, l'utilisateur ne peut pas modifier l'option de la cmd à lancer lors du lancement du conteneur |
 | `CMD ["option"]` | Donner la possibilité à l'utilisateur de modifier l'option de la commande |
 
 ## docker-compose :
 - C'est un outil qui a été développé pour aider à définir et à partager des applications multi-conteneurs.
 - Créer un fichier YAML pour définir les services et, à l'aide d'une seule commande, tout mettre en route ou tout démonter.
-- Compose permet de gérer des applications qui utilisent plusieurs containers et de communiquer entre eux.
-- Pour gerer l'ensemble des containers
+- Compose permet de gérer des applications qui utilisent plusieurs conteneurs et de communiquer entre eux.
+- Pour gérer l'ensemble des conteneurs
 
-
-Conteneu dans un docker-compose :
+Conteneur dans un docker-compose :
 
 services:
 - Un service représente une image Docker (par exemple, une image contenant un serveur web, une base de données, etc.). Chaque service peut être configuré avec des options comme :
@@ -274,13 +273,13 @@ exemple simple :
 
 services:
 	<mon_image>:			-> nom de notre image
-		<vrai_image>:		-> image que l'on va utiliser (exemple= :nginx)
-		container_name:		-> donne un nom au conteneur (exemple= :nginx)
+		<vrai_image>:		-> image que l'on va utiliser (exemple = :nginx)
+		container_name:		-> donne un nom au conteneur (exemple = :nginx)
 		stdin_open: true	-> permet d'interagir avec le conteneur
 		tty: true 			-> permet d'interagir avec le conteneur
 
 ## Volume mappé et managé dans le compose.yml :
-- Va permettre d'enregistrer des donnees meme si un conteneur est supprimer
+- Va permettre d'enregistrer des données même si un conteneur est supprimé
 
 - Mapper :
 services:
@@ -305,9 +304,8 @@ services:
 volumes:
   <nom du volume>:
 
-
 ## Réseau dans le compose.yml
-- Les conteneurs creer dans le compose.yml sont automatiquement connecter a un reseau
+- Les conteneurs créés dans le compose.yml sont automatiquement connectés à un réseau
 
 services:
   <nom du service 1>:
@@ -332,11 +330,11 @@ networks:
 
 # NGINX :
 NGINX (la porte d’entrée) :
-- permet de mettre en place un serveur Web.
+- permet de mettre en place un serveur web.
 - reçoit les requêtes HTTP/HTTPS (navigateur → serveur)
 - renvoie des fichiers statiques (HTML/CSS/JS/images)
-- rediriger les requêtes dynamiques (ex: .php) vers un autre service (ex: PHP-FPM)
-- gére SSL/TSL, redirections, cache, reverse proxy, etc.
+- redirige les requêtes dynamiques (ex: .php) vers un autre service (ex: PHP-FPM)
+- gère SSL/TSL, redirections, cache, reverse proxy, etc.
 
 TSL :
 - C’est un protocole qui sécurise les échanges sur un réseau informatique, notamment sur Internet.
@@ -346,9 +344,9 @@ TSL permet :
 - L’intégrité des données échangées
 - L’authentification du client
 
-Difference entre index.php et index.html (pour dossier config nginx) :
+Différence entre index.php et index.html (pour dossier config nginx) :
 index.html :
-- Fichier statique -> deja pret
+- Fichier statique -> déjà prêt
 - Nginx le lit et l’envoie tel quel au navigateur.
 - Même contenu pour tout le monde (sauf cache/CDN etc.).
 - Pas besoin de PHP-FPM.
@@ -373,12 +371,12 @@ Il gère :
 - Il est écrit en PHP, donc il a besoin de PHP-FPM pour s’exécuter.
 
 # MariaDB :
-- Gestion de base de donnee (embranchement de mySQL)
-- c'est une copie de mySQL mais en open source
-- WordPress y stocke tout ce qui doit être “persistant” : comptes utilisateurs, mots de passe, articles/pages, etc..
+- Gestion de base de données (embranchement de MySQL)
+- c'est une copie de MySQL mais en open source
+- WordPress y stocke tout ce qui doit être “persistant” : comptes utilisateurs, mots de passe, articles/pages, etc.
 
-Exemple de fonctionnement base de donnee comme mySQL :
-- La gestion des données est basée sur un modèle de tableaux; toutes les données traitées sur MySQL sont stockées dans des tableaux pouvant être reliés les uns aux autres via des clés
+Exemple de fonctionnement base de données comme MySQL :
+- La gestion des données est basée sur un modèle de tableaux ; toutes les données traitées sur MySQL sont stockées dans des tableaux pouvant être reliés les uns aux autres via des clés
 
 #
 
