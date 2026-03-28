@@ -42,6 +42,9 @@ Le tag latest est interdit :
 - Le conteneur NGINX doit être le seul point d’entrée de votre infrastructure, via le port 443 uniquement, en utilisant le protocole TLSv1.2 ou TLSv1.3.
 (Le port 443 permet l’accès via https://, et le port 80 via http://.)
 
+PID :
+- Chaque conteneur a un processus principal -> PID 1
+
 ## OS différents :
 Alpine Linux :
 - C’est une distribution Linux légère, orientée sécurité. Elle contient le moins de fichiers et d’outils possible afin de laisser au développeur la possibilité de les installer lui-même si besoin.
