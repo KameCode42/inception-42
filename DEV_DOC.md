@@ -155,13 +155,6 @@ Dockerfile :
 
 =================================
 
-www.conf :
-- servira à configurer PHP-FPM pour écouter sur le bon port et au bon endroit
-- fixe un nombre maximal de requêtes et de réserve
-- garde toutes les variables d'environnement disponibles
-
-=================================
-
 setup_wordpress.sh :
 - Script de lancement pour wordpress
 - Lecture des secrets

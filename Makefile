@@ -1,5 +1,4 @@
 COMPOSE_FILE = srcs/docker-compose.yml
-ENV_FILE = srcs/.env
 DATA_DIR = $(HOME)/data
 
 all: setup build up
@@ -11,15 +10,15 @@ setup:
 
 # construit les images
 build:
-	@docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) build
+	@docker compose -f $(COMPOSE_FILE) build
 
 # démarre les conteneurs
 up:
-	@docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) up -d
+	@docker compose -f $(COMPOSE_FILE) up -d
 
 # arrête les conteneurs
 down:
-	@docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) down
+	@docker compose -f $(COMPOSE_FILE) down
 
 # nettoie Docker sans supprimer tes dossiers de données locaux
 clean: down
@@ -33,4 +32,4 @@ fclean: down
 # supprime tout, recrée tout
 re: fclean all
 
-.PHONY: all setup build up down clean fclean re
+.PHONY: all build up down clean fclean re

@@ -1,14 +1,14 @@
 FROM		debian:bookworm
 
 # Installe le server mariadb
-RUN 		apt-get update && \
-			apt-get install -y mariadb-server && \
-			rm -rf /var/lib/apt/lists/* && \
-			rm -rf /var/lib/mysql/*
+RUN 		apt-get update -y && apt-get upgrade -y && \
+			apt-get install -y mariadb-server mariadb-client && \
+			rm -rf /var/lib/apt/lists/*
 
 # Creer les dossiers utiles à MariaDB
-RUN			mkdir -p /run/mysqld /var/lib/mysql && \
-			chown -R mysql:mysql /run/mysqld /var/lib/mysql
+RUN			mkdir -p var/run/mysqld && \
+			chown -R mysql:mysql var/run/mysqld && \
+			chmod 777 /var/run/mysqld
 
 # Copie le fichier de conf
 COPY		conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf

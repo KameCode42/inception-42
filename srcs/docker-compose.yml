@@ -2,10 +2,7 @@ services:
   mariadb:
     image: mariadb
     container_name: mariadb
-    build:
-      context: ./requirements/mariadb
-      dockerfile: Dockerfile
-    restart: unless-stopped
+    build: ./requirements/mariadb
     env_file:
       - .env
     secrets:
@@ -15,14 +12,12 @@ services:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception
+    restart: unless-stopped
 
   wordpress:
     image: wordpress
     container_name: wordpress
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    restart: unless-stopped
+    build: ./requirements/wordpress
     depends_on:
       - mariadb
     env_file:
@@ -35,14 +30,12 @@ services:
       - wordpress_data:${WP_PATH}
     networks:
       - inception
+    restart: unless-stopped
 
   nginx:
     image: nginx
     container_name: nginx
-    build:
-      context: ./requirements/nginx
-      dockerfile: Dockerfile
-    restart: unless-stopped
+    build: ./requirements/nginx
     depends_on:
       - wordpress
     env_file:
@@ -53,6 +46,7 @@ services:
       - wordpress_data:${WP_PATH}:ro
     networks:
       - inception
+    restart: unless-stopped
 
 volumes:
   mariadb_data:
@@ -61,7 +55,6 @@ volumes:
       type: none
       o: bind
       device: ${MYSQL_VOLUME_PATH}
-
   wordpress_data:
     driver: local
     driver_opts:
@@ -71,6 +64,7 @@ volumes:
 
 networks:
   inception:
+    name: inception
     driver: bridge
 
 secrets:

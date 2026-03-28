@@ -1,7 +1,7 @@
 FROM		debian:bookworm
 
 # Installe nginx et openssl pour TLS
-RUN			apt-get update && \
+RUN			apt-get update -y && apt-get upgrade -y && \
 			apt-get install -y nginx openssl && \
 			rm -rf /var/lib/apt/lists/*
 
@@ -13,7 +13,7 @@ RUN			mkdir -p /etc/nginx/ssl /var/www/html && \
 COPY		conf/nginx.conf /etc/nginx/nginx.conf
 
 # Copie le script pour la clef
-COPY		tools/generate_ssl.sh /usr/local/bin/
+COPY		tools/generate_ssl.sh /usr/local/bin/generate_ssl.sh
 RUN			chmod +x /usr/local/bin/generate_ssl.sh
 
 # port d'entree nginx
