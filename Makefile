@@ -20,7 +20,7 @@ up:
 down:
 	@docker compose -f $(COMPOSE_FILE) down
 
-# nettoie Docker sans supprimer tes dossiers de données locaux
+# nettoie Docker sans supprimer les dossiers de données locaux
 clean: down
 	@docker system prune -af
 

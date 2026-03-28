@@ -135,6 +135,7 @@ docker-compose.yml :
 | `docker compose up -d` | Fait en sorte que le conteneur ne s'arrête pas |
 | `docker compose stop` | Permet d'arrêter le conteneur (dans le dossier où se trouve le .yml) |
 | `docker compose rm` | Permet de supprimer un conteneur |
+| `docker compose down` | Sert à arrêter et supprimer proprement l'ensemble des ressources (conteneurs, réseaux, images) |
 
 ## Les volumes dans Docker :
 - L'utilisation des volumes permet de garder une trace d'un dossier ou fichier après la suppression d'un conteneur (exemple : home)
