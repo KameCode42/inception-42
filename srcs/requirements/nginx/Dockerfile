@@ -5,18 +5,18 @@ RUN			apt-get update -y && apt-get upgrade -y && \
 			apt-get install -y nginx openssl && \
 			rm -rf /var/lib/apt/lists/*
 
-# stocker le certificat et la clef pour une connexion sécurisée
-RUN			mkdir -p /etc/nginx/ssl /var/www/html && \
-			chmod 755 /var/www/html
+# Stocke le certificat et la clef pour une connexion sécurisée
+RUN			mkdir -p /etc/nginx/ssl /var/www/html
 
 # Copie le fichier de conf
-COPY		conf/nginx.conf /etc/nginx/nginx.conf
+COPY		./conf/nginx.conf /etc/nginx/nginx.conf
 
 # Copie le script pour la clef
-COPY		tools/generate_ssl.sh /usr/local/bin/generate_ssl.sh
+COPY		./tools/generate_ssl.sh /usr/local/bin/generate_ssl.sh
 RUN			chmod +x /usr/local/bin/generate_ssl.sh
 
-# port d'entree nginx
+# Port d'entree nginx
 EXPOSE		443
 
+# Génére la clef via le script
 ENTRYPOINT	["/usr/local/bin/generate_ssl.sh"]

@@ -8,6 +8,7 @@ Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 - [Construire mariadb](#construire-mariadb-)
 - [Construire nginx](#construire-nginx-)
 - [Construire wordpress](#construire-wordpress-)
+- [Construire docker compose](#Construire-docker-compose-)
 
 # Mise en place des conteneurs
 
@@ -21,7 +22,6 @@ Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 | `WORDPRESS_VOLUME_PATH` | Chemin hôte du stockage persistant WordPress |
 | `MYSQL_DATABASE` | Nom de la base utilisée par WordPress |
 | `MYSQL_USER` | Nom de l’utilisateur SQL utilisé par WordPress pour se connecter à MariaDB |
-| `MYSQL_HOST` | Nom du service Docker de la base |
 | `WP_TITLE` | Titre du site WordPress |
 | `WP_ADMIN_USER` | Nom du compte administrateur WordPress |
 | `WP_ADMIN_EMAIL` | Email du compte admin WordPress |
@@ -88,10 +88,8 @@ conf/50-server.cnf :
 | Variable | Description |
 |---|---|
 | `[mysqld]` | s'applique au serveur MariaDB |
-| `bind_adress = 0.0.0.0` | tous les IP du réseau peuvent se connecter |
+| `bind_adress = 0.0.0.0` | toutes les IP du réseau peuvent se connecter |
 | `port = 3306` | port standard MariaDB/MySQL |
-| `socket  = /run/mysqld/mysqld.sock` | utilisé pour les connexions locales internes au conteneur |
-| `pid-file = /run/mysqld/mysqld.pid` | Créer un fichier PID au démarrage |
 | `datadir = /var/lib/mysql` | répertoire de données MariaDB |
 
 =================================
@@ -146,12 +144,14 @@ Dockerfile :
 | Service | Description |
 |---|---|
 | `php-fpm` | cœur du service, exécute le PHP pour nginx |
-| `php-cli` | utile pour les scripts d’installation et pour l’automatisation autour de WordPress |
 | `php-mysql` | indispensable pour que WordPress parle à MariaDB |
-| `curl` | utile pour récupérer WordPress ou d’autres outils dans le script d’installation |
-| `mariadb-client` | utile pour tester la disponibilité de MariaDB depuis le conteneur WordPress |
-| `ca-certificates` | pratique dès qu’on télécharge quelque chose en HTTPS |
-| `tar` | utile si le script télécharge l’archive WordPress et la décompresse |
+| `php8.2-curl` | extension PHP pour utiliser curl depuis du code PHP |
+| `php8.2-gd` | extension PHP pour la manipulation d’images |
+| `php8.2-mbstring` | extension PHP pour les chaînes de caractères multioctets (accent, caractères spéciaux) |
+| `php8.2-xml` | extension PHP pour le traitement du XML |
+| `php8.2-zip` | extension PHP pour gérer les fichiers ZIP |
+| `curl` | commande système curl |
+| `mariadb-client` | client MariaDB en ligne de commande |
 
 =================================
 
@@ -178,3 +178,61 @@ wp core install :
 
 wp user create :
 - Création du second utilisateur WordPress
+
+## Construire docker-compose :
+
+| Mot-clé | Description |
+|---|---|
+| `services` | permet de déclarer les différents services de l’infrastructure |
+| `mariadb` | service de base de données MariaDB |
+| `wordpress` | service WordPress |
+| `nginx` | service NGINX |
+| `image` | nom de l’image du service |
+| `container_name` | nom donné au conteneur |
+| `build` | chemin du dossier contenant le Dockerfile pour construire l’image |
+| `depends_on` | permet de définir l’ordre de démarrage entre les services |
+| `env_file` | charge les variables d’environnement depuis le fichier `.env` |
+| `secrets` | monte les secrets à l’intérieur du conteneur |
+| `volumes` | permet de monter un volume dans le conteneur |
+| `networks` | connecte le service à un réseau Docker |
+| `restart` | définit la politique de redémarrage du conteneur |
+| `ports` | permet de mapper un port de la machine hôte vers un port du conteneur |
+
+| Service | Description |
+|---|---|
+| `mariadb` | conteneur qui gère la base de données WordPress |
+| `wordpress` | conteneur qui contient l’application WordPress et PHP-FPM |
+| `nginx` | conteneur qui sert de point d’entrée HTTPS sur le port 443 |
+
+| Volume | Description |
+|---|---|
+| `mariadb_data:/var/lib/mysql` | stocke les données persistantes de MariaDB |
+| `wordpress_data:${WP_PATH}` | stocke les fichiers WordPress dans le chemin défini par `WP_PATH` |
+| `wordpress_data:${WP_PATH}:ro` | monte les fichiers WordPress en lecture seule dans NGINX |
+
+| Mot-clé volume | Description |
+|---|---|
+| `volumes` | déclare les volumes gérés par Docker Compose |
+| `mariadb_data` | volume utilisé pour la persistance de MariaDB |
+| `wordpress_data` | volume utilisé pour la persistance de WordPress |
+| `driver: local` | utilise le driver local de Docker pour gérer le volume |
+| `driver_opts` | permet de préciser les options du montage du volume |
+| `type: none` | indique qu’il n’y a pas de type spécial de système de fichiers |
+| `o: bind` | demande un montage de type bind entre l’hôte et Docker |
+| `device` | chemin réel sur la machine hôte utilisé pour stocker les données |
+
+| Réseau | Description |
+|---|---|
+| `networks` | déclare les réseaux Docker utilisés par les services |
+| `inception` | réseau privé utilisé pour faire communiquer les conteneurs |
+| `name: inception` | nom réel donné au réseau Docker |
+| `driver: bridge` | utilise le mode bridge pour permettre la communication entre conteneurs |
+
+| Secret | Description |
+|---|---|
+| `secrets` | déclare les fichiers sensibles utilisés par les services |
+| `db_root_password` | mot de passe root de MariaDB |
+| `db_password` | mot de passe de l’utilisateur SQL WordPress |
+| `wp_admin_password` | mot de passe du compte administrateur WordPress |
+| `wp_user_password` | mot de passe du second utilisateur WordPress |
+| `file` | chemin du fichier secret sur la machine hôte |

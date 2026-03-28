@@ -16,14 +16,14 @@ echo "MariaDB est prêt !"
 
 cd "$WP_PATH"
 
-# Telecharge les fichiers wordpress
+# Télécharge les fichiers wordpress
 # Premier lancement : téléchargement
 # Lancements suivants : ne retélécharge pas
 if [ ! -f "$WP_PATH/wp-config.php" ]; then
 	echo "Telechargement de WordPress..."
 	wp core download --allow-root
 
-	# Crée wp-config.php
+	# Créer wp-config.php
 	echo "Configuartion de WordPress..."
 	wp config create \
 		--dbname="${MYSQL_DATABASE}" \
@@ -51,7 +51,7 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
 
 	echo "WordPress prêt."
 
-	# change les permissions
+	# Change les permissions
 	chown -R www-data:www-data "$WP_PATH"
 	chmod -R 755 "$WP_PATH"
 fi

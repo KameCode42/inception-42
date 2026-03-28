@@ -27,7 +27,7 @@ Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 - Il consiste à relier plusieurs images Docker et à pouvoir les lancer ensemble, sans pour autant qu’elles perdent leur indépendance (grâce à Docker Compose)
 
 Le projet repose sur plusieurs conteneurs séparés :
-- NGINX sert de point d’entrée unique en HTTPS (TSL 1.2/1.3) sur le port 443
+- NGINX sert de point d’entrée unique en HTTPS (TLS 1.2/1.3) sur le port 443
 
 - WordPress fonctionne avec PHP-FPM (sans NGINX)
 
@@ -39,7 +39,7 @@ Le tag latest est interdit :
 - Aucun mot de passe ne doit être présent dans vos Dockerfiles.
 - L’utilisation des variables d’environnement est obligatoire.
 - La mise en place d’un fichier .env afin de stocker vos variables d’environnement est fortement conseillée.
-- Le conteneur NGINX doit être le seul point d’entrée de votre infrastructure, via le port 443 uniquement, en utilisant le protocole TSLv1.2 ou TSLv1.3.
+- Le conteneur NGINX doit être le seul point d’entrée de votre infrastructure, via le port 443 uniquement, en utilisant le protocole TLSv1.2 ou TLSv1.3.
 (Le port 443 permet l’accès via https://, et le port 80 via http://.)
 
 ## OS différents :
@@ -125,13 +125,13 @@ docker-compose.yml :
 |---|---|
 | `docker network ls` | liste les réseaux Docker |
 | `docker network create --driver=<DRIVER> <mon_nom_reseau>` | Créer un réseau personnalisé |
-| `docker run --network=<NAME_reseau> <image>` | Créer un conteneur et le relie au réseau |
+| `docker run --network=<NAME_reseau> <image>` | Créer un conteneur et le relier au réseau |
 | `docker network disconnect <NAME_reseau> <nom_conteneur>` | Déconnecte un conteneur du réseau |
 | `docker network rm <NAME_reseau>` | Supprimer un réseau |
 | `docker network inspect <NAME_reseau>` | permet de connaître les informations du réseau |
 | Compose |
 |---|---|
-| `docker compose up` | Permet d'exécuter le fichier compose.yml et créer un conteneur |
+| `docker compose up` | Permet d'exécuter le fichier compose.yml et de créer un conteneur |
 | `docker compose up -d` | Fait en sorte que le conteneur ne s'arrête pas |
 | `docker compose stop` | Permet d'arrêter le conteneur (dans le dossier où se trouve le .yml) |
 | `docker compose rm` | Permet de supprimer un conteneur |
@@ -146,7 +146,7 @@ docker-compose.yml :
 - Permet de copier du contenu qui se trouve dans la machine locale (dossier) vers le conteneur (dossier). Ils sont en relation.
 - Ce contenu peut être modifié directement dans le conteneur.
 - Une fois le conteneur supprimé, le contenu modifié dans celui-ci est enregistré dans le contenu de la machine locale.
-- En résumé c'est le dossier de la machine locale qui prend le dessus
+- En résumé, c'est le dossier de la machine locale qui prend le dessus
 
 exemple :
 - Mapper (copier) un dossier test qui se trouve dans la machine locale dans un dossier home du conteneur, tout le contenu qui se trouve dans le dossier test de la machine locale se retrouvera dans le dossier home du conteneur
@@ -159,7 +159,7 @@ exemple :
 ## Manager un volume :
 - À la différence de mapper, il faut créer un volume dans Docker
 - Le volume créé récupère le contenu auquel il a été relié
-- Si le conteneur est supprimé les fichiers du volume ne sont pas supprimés
+- Si le conteneur est supprimé, les fichiers du volume ne sont pas supprimés
 - Si on le relie à un autre dossier vide, celui-ci contiendra tous les fichiers du volume
 - Si on relie un volume à un dossier avec du contenu, le contenu du dossier est remplacé par celui du volume
 
@@ -186,7 +186,7 @@ docker run -p 9000:80 nginx
 
 ## Conteneurs connectés :
 - Pour que des conteneurs puissent communiquer, il faut installer deux programmes dans chaque conteneur, ping et ip.
-- Communique par adresse IP
+- Communiquent par adresse IP
 - Les conteneurs sont reliés entre eux par défaut
 
 ping :
@@ -235,7 +235,7 @@ null :
 
 | Mot-clé | Description |
 |---|---|
-| `FROM <image>:<version>` | permet d'indiquer sur quelle image de base nous construirons notre propre image personnalisée.|
+| `FROM <image>:<version>` | permet d'indiquer sur quelle image de base nous construirons notre propre image personnalisée. |
 | `RUN` | lance une ou plusieurs commandes Linux pendant la phase de construction de notre image. |
 | `COPY <dossier_machine_local> <dossier_conteneur>` | permet de copier un dossier et/ou des fichiers qui se trouvent dans notre machine locale vers le conteneur. |
 | `EXPOSE <port>` | Permet d'indiquer dans quel port le conteneur écoute |
@@ -266,7 +266,6 @@ Volumes:
 
 networks:
 - Ces réseaux personnalisés vous aident à mieux maîtriser la communication entre vos conteneurs. Là encore, c’est facultatif. Vous pouvez vous contenter d’utiliser le réseau par défaut de Docker si vous n’avez pas de configuration réseau spécifique.
-
 
 ## Créer un fichier docker-compose.yml :
 exemple simple :
@@ -334,11 +333,11 @@ NGINX (la porte d’entrée) :
 - reçoit les requêtes HTTP/HTTPS (navigateur → serveur)
 - renvoie des fichiers statiques (HTML/CSS/JS/images)
 - redirige les requêtes dynamiques (ex: .php) vers un autre service (ex: PHP-FPM)
-- gère SSL/TSL, redirections, cache, reverse proxy, etc.
+- gère SSL/TLS, redirections, cache, reverse proxy, etc.
 
-TSL :
+TLS :
 - C’est un protocole qui sécurise les échanges sur un réseau informatique, notamment sur Internet.
-TSL permet :
+TLS permet :
 - L’authentification du serveur
 - La confidentialité des données échangées (session chiffrée)
 - L’intégrité des données échangées
@@ -350,7 +349,7 @@ index.html :
 - Nginx le lit et l’envoie tel quel au navigateur.
 - Même contenu pour tout le monde (sauf cache/CDN etc.).
 - Pas besoin de PHP-FPM.
-- Exemple : une page maintenance
+- Exemple : une page de maintenance
 
 index.php :
 - Fichier dynamique -> c’est du code PHP.

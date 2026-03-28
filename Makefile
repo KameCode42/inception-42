@@ -24,7 +24,7 @@ down:
 clean: down
 	@docker system prune -af
 
-# nettoie Docker avec volumes, vide les données MariaDB et WordPress
+# nettoie Docker avec les volumes, vide les données MariaDB et WordPress
 fclean: down
 	@docker system prune -af --volumes
 	@sudo rm -rf $(DATA_DIR)/mariadb/* $(DATA_DIR)/wordpress/*
