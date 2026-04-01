@@ -3,6 +3,8 @@ Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 # Lancer le projet :
 <img width="79" height="35" alt="Image" src="https://github.com/user-attachments/assets/8ca79162-69fe-4d10-a116-020d663388ed" />
 
+
+
 <img width="320" height="205" alt="Image" src="https://github.com/user-attachments/assets/e4245db4-76bc-4b66-9f50-c411fb1e325e" />
 
 Controler l'acces via le port 443 :
@@ -35,7 +37,7 @@ Dans MariaDB :
 - SELECT ID, user_login, user_email FROM wp_users - voir les utilisateurs WordPress
 - SELECT ID, post_title, post_status FROM wp_posts - voir les articles
 
-## Créer une table de test :
+Créer une table de test :
 - CREATE TABLE IF NOT EXISTS evaluation_test (
     id INT PRIMARY KEY,
     note VARCHAR(100)
