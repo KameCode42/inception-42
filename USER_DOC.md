@@ -1,11 +1,7 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
 # Lancer le projet :
-<img width="79" height="35" alt="Image" src="https://github.com/user-attachments/assets/8ca79162-69fe-4d10-a116-020d663388ed" />
-
-
-
-<img width="320" height="205" alt="Image" src="https://github.com/user-attachments/assets/e4245db4-76bc-4b66-9f50-c411fb1e325e" />
+<img width="79" height="35" alt="Image" src="https://github.com/user-attachments/assets/8ca79162-69fe-4d10-a116-020d663388ed" /> <img width="320" height="205" alt="Image" src="https://github.com/user-attachments/assets/e4245db4-76bc-4b66-9f50-c411fb1e325e" />
 
 Controler l'acces via le port 443 :
 - curl -k -I https://dle-fur.42.fr
