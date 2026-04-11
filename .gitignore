@@ -1,11 +1,11 @@
 # Ignore les secrets local
-#secrets/*
-#!secrets/.gitkeep
+secrets/*
+!secrets/.gitkeep
 
 # Ignore le .env
-#srcs/.env
+srcs/.env
 
 # Editor / OS files
-#.DS_Store
-#*.swp
-#*~
+.DS_Store
+*.swp
+*~

@@ -1,7 +1,36 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
+# Preparer avant de lancer :
+- Dans la racine du projet, creer un dossier secrets avec les fichiers .txt utile
+mkdir -p secrets
+echo "secret123" > secrets/db_root_password.txt
+echo "secret123" > secrets/db_password.txt
+echo "secret123" > secrets/wp_admin_password.txt
+echo "secret123" > secrets/wp_user_password.txt
+
+- Dans le dossier srcs, creer un fichier .env et copier ceci :
+
+LOGIN=dle-fur
+DOMAIN_NAME=dle-fur.42.fr
+
+DATA_PATH=/home/dle-fur/data
+MYSQL_VOLUME_PATH=/home/dle-fur/data/mariadb
+WORDPRESS_VOLUME_PATH=/home/dle-fur/data/wordpress
+
+MYSQL_DATABASE=wordpress_db
+MYSQL_USER=wp_user
+
+WP_TITLE=Inception
+WP_ADMIN_USER=editor
+WP_ADMIN_EMAIL=editor@student.42.fr
+WP_USER=wpuser
+WP_USER_EMAIL=wpuser@student.42.fr
+
+WP_PATH=/var/www/html
+
+
 # Lancer le projet :
-<img width="79" height="35" alt="Image" src="https://github.com/user-attachments/assets/8ca79162-69fe-4d10-a116-020d663388ed" /> 
+<img width="79" height="35" alt="Image" src="https://github.com/user-attachments/assets/8ca79162-69fe-4d10-a116-020d663388ed" />
 </p>
 <img width="320" height="205" alt="Image" src="https://github.com/user-attachments/assets/e4245db4-76bc-4b66-9f50-c411fb1e325e" />
 
