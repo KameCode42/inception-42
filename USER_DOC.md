@@ -1,16 +1,28 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
-# Preparer avant de lancer :
-- Creer le dossier secret depuis la racine avec les fichiers utiles et ajouter dans chacun un mdp
+# Etape 1 :
+- Depuis la racine du projet, creer un dossier secrets avec les fichiers utiles, commande :
+
 mkdir -p secrets && touch secrets/db_root_password.txt secrets/db_password.txt secrets/wp_admin_password.txt secrets/wp_user_password.txt
 
-- Dans le dossier srcs, modifier le fichier .env.example en le transformant en .env et en modifiant les valeurs
+- Mettre un mot de passe dans chaque fichier
 
-# Lancer le projet :
+# Etape 2 :
+- Depuis la racine du projet, copier le .env.example vers le .env, commande :
+
+cp srcs/.env.example srcs/.env
+
+- Supprimer le .env.example
+- Dans le .env, remplacer tous les champs <your_login> par le login reel
+
+# Etape 3 :
+- Lancer avec make
+
 <img width="79" height="35" alt="Image" src="https://github.com/user-attachments/assets/8ca79162-69fe-4d10-a116-020d663388ed" />
 </p>
 <img width="320" height="205" alt="Image" src="https://github.com/user-attachments/assets/e4245db4-76bc-4b66-9f50-c411fb1e325e" />
 
+# Etape controle :
 - Controler l'acces via le port 443 :
 curl -k -I https://dle-fur.42.fr
 
