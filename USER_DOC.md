@@ -1,9 +1,13 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
 # Preparer avant de lancer :
-- Dans la racine du projet, creer un dossier secrets avec les fichiers .txt utile
+Dans le dossier secrets, enlever le .example et mettre une valeur dans chaque fichier
+- db_root_password.txt  ->  mdp root mariadb
+- db_password.txt       ->  mdp user mariadb
+- wp_admin_password.txt ->  mdp admin wordpress
+- wp_user_password.txt  ->  mdp second user wordpress
 
-- Dans le dossier srcs, creer un fichier .env
+- Dans le dossier srcs, modifier le fichier .env.example en le transformant en .env et en modifiant les valeurs
 
 # Lancer le projet :
 <img width="79" height="35" alt="Image" src="https://github.com/user-attachments/assets/8ca79162-69fe-4d10-a116-020d663388ed" />

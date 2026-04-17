@@ -1,5 +1,5 @@
 # Ignore les secrets local
-secrets/*
+secrets/*.txt
 !secrets/.gitkeep
 
 # Ignore le .env
