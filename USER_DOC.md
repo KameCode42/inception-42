@@ -1,7 +1,7 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
 # Preparer avant de lancer :
-- Creer le dossier secret depuis la racine avec les fichiers utiles
+- Creer le dossier secret depuis la racine avec les fichiers utiles et ajouter dans chacun un mdp
 mkdir -p secrets && touch secrets/db_root_password.txt secrets/db_password.txt secrets/wp_admin_password.txt secrets/wp_user_password.txt
 
 - Dans le dossier srcs, modifier le fichier .env.example en le transformant en .env et en modifiant les valeurs
