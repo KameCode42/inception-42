@@ -10,15 +10,15 @@ setup:
 
 # construit les images
 build:
-	@docker compose -f $(COMPOSE_FILE) build
+	@docker-compose -f $(COMPOSE_FILE) build
 
 # démarre les conteneurs
 up:
-	@docker compose -f $(COMPOSE_FILE) up -d
+	@docker-compose -f $(COMPOSE_FILE) up -d
 
 # arrête les conteneurs
 down:
-	@docker compose -f $(COMPOSE_FILE) down
+	@docker-compose -f $(COMPOSE_FILE) down
 
 # nettoie Docker sans supprimer les dossiers de données locaux
 clean: down
