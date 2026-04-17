@@ -1,11 +1,8 @@
 Ce projet a été créé dans le cadre du cursus 42 par dle-fur
 
 # Preparer avant de lancer :
-Dans le dossier secrets, enlever le .example et mettre une valeur dans chaque fichier
-- db_root_password.txt  ->  mdp root mariadb
-- db_password.txt       ->  mdp user mariadb
-- wp_admin_password.txt ->  mdp admin wordpress
-- wp_user_password.txt  ->  mdp second user wordpress
+- Creer le dossier secret depuis la racine avec les fichiers utiles
+mkdir -p secrets && touch secrets/db_root_password.txt secrets/db_password.txt secrets/wp_admin_password.txt secrets/wp_user_password.txt
 
 - Dans le dossier srcs, modifier le fichier .env.example en le transformant en .env et en modifiant les valeurs
 
